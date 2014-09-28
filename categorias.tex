@@ -1,0 +1,179 @@
+\documentclass[a4paper, 11pt]{amsart}
+\usepackage{amssymb}
+
+%%% Castellano
+\usepackage[spanish]{babel} 
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+
+%%% Diagramas
+% Conmutative diagrams
+\usepackage{tkz-graph}
+\usetikzlibrary{arrows}
+
+%%% Shortcuts
+\newcommand{\C}{\mathcal{C} }
+
+%%% Twopart definition
+\newcommand{\twopartdef}[4]
+{
+	\left\{
+		\begin{array}{ll}
+			#1 & \mbox{si } #2 \\
+			#3 & \mbox{si } #4
+		\end{array}
+	\right.
+}
+
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definición}
+\newtheorem{example}[theorem]{Ejemplo}
+\newtheorem{exca}[theorem]{Ejercicio}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\numberwithin{equation}{section}
+
+\begin{document}
+
+\title{Introducción a la teoría de categorías}
+
+%    Remove any unused author tags.
+
+%    author one information
+\author{Mario Román}
+\address{}
+\curraddr{}
+\email{}
+\thanks{}
+
+% References
+%\subjclass[2000]{Primary }
+%    For articles to be published after 1 January 2010, you may use
+%    the following version:
+%\subjclass[2010]{Primary }
+
+\keywords{}
+
+\date{}
+
+\dedicatory{}
+
+\begin{abstract}
+  Presentamos una breve introducción a la teoría de categorías, motivando y definiendo el concepto.
+  Se indican los primeros ejemplos de categorías.
+\end{abstract}
+
+\maketitle
+
+\section {Categorías}
+  \subsection {Motivación}
+    Varias estructuras matemáticas (grupos, espacios vectoriales, espacios topológicos \dots) cuentan
+    con morfismos que preservan las estructura subyacentes entre ellas. Como ejemplos:
+    \begin {center}
+    \begin{tabular}{l|l}
+      Conjunto & Morfismos \\
+      \hline
+      Grupos & Homomorfismos de grupos \\
+      Espacios topológicos & Funciones continuas \\
+      Espacios métricos & Funciones cortas \\
+      Conjuntos & Funciones \\
+      Espacios vectoriales sobre $\mathbb{K}$ & Funciones lineales sobre $\mathbb{K}$ \\
+    \end{tabular}
+    \end{center}
+    Si estudiamos axiomáticamente las propiedades abstractas de estas estructuras y sus morfismos,
+    obtendremos teoremas particularizables a todos estos casos útiles por sí mismos.
+    Una categoría la formarán una clase de estos espacios con estructura y los morfismos entre estos
+    espacios; y los teoremas que deduzcamos para todas las categorías podrán aplicarse a cada uno de
+    los espacios.
+    
+  \subsection {Definición formal}
+    \definition
+    Una \textbf{categoría} $\C$ está definida por:
+    \begin{itemize}
+      \item Una clase de objetos de la categoría, $Obj(\mathcal{C})$.
+      \item Un conjunto de morfismos $Hom_{\C}(A,B)$, poblado o no, entre cada par de objetos $A,B \in Obj(\C)$.
+    \end{itemize}
+
+    Cumpliendo sus morfismos las siguientes propiedades:
+    \begin{itemize}
+      \item Para dos morfismos $f \in Hom(A,B)$, $g \in Hom(B,C)$, existe su morfismo composición $f \circ g$.
+      \item La composición es asociativa: $ f \circ (g \circ h) = (f \circ g) \circ h$
+      \item Todos los objetos tienen un morfismo identidad, $1_{A} \in Hom(A,A)$, 
+	  neutro para la composición: $\forall f \in Hom(A,B): f \circ 1_{A} = 1_{B} \circ f = f$
+    \end{itemize}
+    
+    \exca Demostrar que la identidad es el único elemento neutro para la composición.
+
+  \subsection {Ejemplos}
+    Como idea simplificadora, podemos que los objetos son conjuntos, y los morfismos, funciones
+    entre esos conjuntos; de hecho, el primer ejemplo es la definición de ese caso concreto. 
+    Este es un buen modelo intuitivo para trabajar con algunas categorías,
+    pero presentaremos ejemplos que rechazan esta intuición.
+    \subsubsection{Categoría \texttt{Set}}
+      La categoría de los conjuntos con las funciones entre conjuntos como morfismos.
+      \begin{gather*}
+        Obj(\texttt{Set}) = \{Todos\ los\ conjuntos\} \\
+        Hom(A,B)= B^A = \{f \;|\; f: A \rightarrow B \}
+      \end{gather*}
+      Trivialmente es categoría: las funciones se componen en funciones, la composición es
+      asociativa y la identidad funciona como se espera, siendo otra función.
+      
+    \subsubsection{Categoría \texttt{VectR}}
+      La categoría de los espacios vectoriales reales con las funciones lineales entre
+      espacios vectoriales reales.
+      \begin{gather*}
+        Obj(\texttt{VectR}) = \{Todos\ los\ espacios\ vectoriales\ sobre\ \mathbb{R}\} \\
+        Hom(A,B)= \mathcal{L}_{\mathbb{R}}(A,B)
+      \end{gather*}
+      \exca Observar que \texttt{VectR} es una categoría.
+    
+    \subsubsection{Categoría \texttt{$(S,\sim)$}}
+      Cualquier conjunto $S$ que tenga definida una relación de equivalencia $\sim$ tiene
+      definida una categoría asociada en la que los objetos son los elementos del conjunto
+      y los morfismos sólo representan casos particulares de la relación de equivalencia.
+      \textit{En este ejemplo, los morfismos no son funciones y los objetos no son conjuntos,
+      rechazando por primera vez la intuición del primer ejemplo.}
+      \begin{gather*}
+        Obj((S,\sim)) = S
+      \end{gather*}
+      Hay un morfismo entre dos elementos si y sólo si están relacionados:
+      \begin{align*}
+        Hom(a,b)= \twopartdef{(a,b)}{a \sim b}{\emptyset}{a \nsim b}
+      \end{align*}
+      Y la composición se define como:
+      \begin{align*}
+       (a,b) \circ (b,c) = (a,c)
+      \end{align*}
+      Probar que es categoría se reduce a notar que la composición de morfismos es morfismo (por
+      ser la relación transitiva), que la composición es asociativa y que existe el morfismo identidad
+      $(a,a)$, por ser la relación reflexiva.
+      
+    
+% \section {Tipos de morfismos}
+%   \subsection {Isomorfismos}
+%   \subsection {Epimorfismos y monomorfismos}
+% 
+% \section {Propiedades universales}
+% \subsection {Objetos iniciales}
+% \subsection {Objetos finales}
+% \subsection {Ejemplos}
+% \subsection {Propiedades universales de map, filter, fold}
+% 
+% \section {Productos y coproductos}
+% 
+% \section {Functores}
+% 
+% \section {Transformaciones naturales}
+
+\end{document}
+
+%-----------------------------------------------------------------------
+% End of amsart.template
+%-----------------------------------------------------------------------
