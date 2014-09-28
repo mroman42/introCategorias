@@ -2,14 +2,20 @@
 \usepackage{amssymb}
 
 %%% Castellano
-\usepackage[spanish]{babel} 
+\usepackage[spanish,es-noquoting]{babel} 
 \selectlanguage{spanish}
 \usepackage[utf8]{inputenc}
 
 %%% Diagramas
 % Conmutative diagrams
-\usepackage{tkz-graph}
-\usetikzlibrary{arrows}
+%\usepackage{tkz-graph}
+%\usetikzlibrary{arrows}
+\usepackage{tikz}
+\usetikzlibrary{matrix,arrows}
+\tikzset{every loop/.style={min distance=10mm,in=0,out=60,looseness=10}}
+
+%% Multicolumns
+\usepackage{multicol}
 
 %%% Shortcuts
 \newcommand{\C}{\mathcal{C} }
@@ -27,8 +33,8 @@
 
 
 
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{lemma}[theorem]{Lema}
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definición}
@@ -66,8 +72,9 @@
 \dedicatory{}
 
 \begin{abstract}
-  Presentamos una breve introducción a la teoría de categorías, motivando y definiendo el concepto.
-  Se indican los primeros ejemplos de categorías.
+  Se explican tipos de morfismos y propiedades universales. Se hace especial incapié en productos y
+  coproductos y se pasan a explicar los functores y las transformaciones naturales.
+  Terminamos enunciando el Lema de Yoneda.
 \end{abstract}
 
 \maketitle
@@ -110,7 +117,44 @@
     \end{itemize}
     
     \exca Demostrar que la identidad es el único elemento neutro para la composición.
-
+  
+    \begin{center}
+    	
+    
+    \begin{tabular}{ccc}
+        \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+	  \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+	  { A & B \\
+	     & C \\ };
+	  \path[->,font=\scriptsize]
+	  (m-1-1) edge node[auto] {$ f $} (m-1-2)
+	  (m-1-2) edge node[auto] {$ g $} (m-2-2)
+	  (m-1-1) edge node[auto,swap] {$ g \circ f $} (m-2-2);
+	\end{tikzpicture} &
+        
+        \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+	  \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+	  { A & B & \\ & C & D \\ };
+	  \path[->,font=\scriptsize]
+	  (m-1-1) edge node[auto] {$ f $} (m-1-2)
+	  (m-1-2) edge node[auto] {$ g $} (m-2-2)
+	  (m-2-2) edge node[auto] {$ h $} (m-2-3)
+	  (m-1-1) edge node[auto,swap] {$ g \circ f $} (m-2-2)
+	  (m-1-2) edge node[auto] {$ h \circ g $} (m-2-3);
+	\end{tikzpicture} &
+        
+	
+        \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+	  \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+	  { A \\ };
+	  \path[->,font=\scriptsize]
+	  (m-1-1) edge[loop above] node[auto] {$ 1_A $} (m-1-1);
+	\end{tikzpicture}
+    \end{tabular}
+    \end{center}
+    \smallskip \textit{Diagramas conmutativos de las propiedades básicas.} \\
+    
+    
   \subsection {Ejemplos}
     Como idea simplificadora, podemos que los objetos son conjuntos, y los morfismos, funciones
     entre esos conjuntos; de hecho, el primer ejemplo es la definición de ese caso concreto. 
@@ -154,23 +198,163 @@
       Probar que es categoría se reduce a notar que la composición de morfismos es morfismo (por
       ser la relación transitiva), que la composición es asociativa y que existe el morfismo identidad
       $(a,a)$, por ser la relación reflexiva.
+     
+    \subsubsection{Categoría \texttt{$(S,\leq)$}}
+      Cualquier conjunto parcialmente ordenado tiene una categoría asociada. Los objetos
+      son sus elementos y los morfismos son casos particulares de la relación de orden.
+      \begin{gather*}
+        Obj((S,\leq)) = S
+      \end{gather*}
+      Hay un morfismo entre $a$ y $b$ si y sólo si $a \leq b$:
+      \begin{align*}
+        Hom(a,b)= \twopartdef{(a,b)}{a \leq b}{\emptyset}{\mbox{no}}
+      \end{align*}
+      La composición se define como anteriormente: $(a,b) \circ (b,c) = (a,c)$, y es
+      trivial volver a probar que se trata de una categoría.
+      \medskip
       
+      Un posible diagrama conmutativo de la categoría \texttt{$(\mathbb{N},\leq)$} sería:
+      \begin{center}
+        \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+	  \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+	  { 1 & 3 & 5 \\ & 6 & 7 \\ };
+	  \path[->,font=\scriptsize]
+	  (m-1-1) edge node[auto] {$ (1,3) $} (m-1-2)
+	  (m-1-2) edge node[auto] {$ (3,6) $} (m-2-2)
+	  (m-2-2) edge node[auto] {$ (6,7) $} (m-2-3)
+	  (m-1-1) edge node[auto,swap] {$ (1,6) $} (m-2-2)
+	  (m-1-2) edge node[auto] {$ (3,5) $} (m-1-3)
+	  (m-1-3) edge node[auto] {$ (5,7) $} (m-2-3);
+	\end{tikzpicture}
+      \end{center}
     
-% \section {Tipos de morfismos}
-%   \subsection {Isomorfismos}
-%   \subsection {Epimorfismos y monomorfismos}
-% 
-% \section {Propiedades universales}
-% \subsection {Objetos iniciales}
-% \subsection {Objetos finales}
-% \subsection {Ejemplos}
-% \subsection {Propiedades universales de map, filter, fold}
-% 
-% \section {Productos y coproductos}
-% 
-% \section {Functores}
-% 
-% \section {Transformaciones naturales}
+\newpage
+\section {Tipos de morfismos}
+  \subsection {Isomorfismos}
+    \definition Un morfismo $f \in Hom(A,B)$ es \textbf{isomorfismo} cuando existe un morfismo inverso
+    $g \in Hom(B,A)$ cumpliendo:
+    \begin{gather*}
+     (g \circ f) = 1_A \qquad (f \circ g) = 1_B
+    \end{gather*}
+    \exca Probar que el inverso, si existe, es único. Lo notaremos como $f^{-1}$. Observar que si
+    existe un inverso por la derecha y un inverso por la izquierda deben ser iguales.
+    
+    \subsubsection{Propiedades de isomorfismos}
+      \begin{itemize}
+       \item La identidad es isomorfismo: $(1)^{-1} = 1$ 
+       \item El inverso de un isomorfismo es isomorfismo: $(f^{-1})^{-1} = f$.
+       \item La composición de isomorfismos es isomorfismo: $(g \circ f)^{-1} = f^{-1} \circ g^{-1}$
+      \end{itemize}
+
+    Nótese que, precisamente, los isomorfismos de \texttt{Set} son las biyecciones entre conjuntos.
+    Los isomorfismos de \texttt{Top} son los homeomorfismos y los isomorfismos de \texttt{Met} son
+    las isometrías.
+    
+  \subsection {Epimorfismos y monomorfismos}
+
+\newpage
+\section {Propiedades universales}
+  Varias construcciones en las diversas estructuras que motivaron las categorías pueden parecer
+  escogidas arbitrariamente. Sin embargo, la definición de las propiedades universales las dejará
+  como las únicas cumpliendo una construcción formal no arbitraria. Además, nos permitirá descubrir
+  relaciones más profundas entre las construcciones en las distintas categorías.
+  
+  \subsection {Objetos terminales}
+    \definition El objeto $I \in Obj(\C)$ se dice \textbf{inicial} cuando a cualquier otro objeto llega
+    un único morfismo desde él. Es decir:
+    \begin{gather*}
+      \forall A \in Obj(\C):\quad \#(Hom(I,A)) = 1
+    \end{gather*}
+
+    \definition Análogamente, el objeto $F \in Obj(\C)$ se dice \textbf{final} cuando desde cualquier otro objeto llega
+    un único morfismo hacia él. Es decir:
+    \begin{gather*}
+      \forall A \in Obj(\C):\quad \#(Hom(A,F)) = 1
+    \end{gather*}
+    
+    Se llama \textbf{objeto terminal} a un objeto inicial o final y \textbf{objeto cero} a un objeto
+    terminal y final. Una categoría no tiene por qué
+    tener objetos terminales, y estos no tienen por qué ser únicos. Pero serán esencialmente únicos,
+    es decir, si dos objetos son ambos iniciales o ambos finales en una categoría, serán isomorfos.
+    
+    \theorem Los objetos iniciales y los objetos finales son esencialmente únicos:
+    \begin{itemize}
+     \item Si $I_1,I_2$ son iniciales, $I_1 \cong I_2$
+     \item Si $F_1,F_2$ son finales, $F_1 \cong F_2$
+    \end{itemize}
+
+    
+  \subsection {Ejemplos}
+    \subsubsection {Universales conjuntistas}
+    \subsubsection {Proyección al cociente}
+    
+  \subsection {Propiedades universales de map, filter, fold}
+
+\newpage
+\section {Productos y coproductos}
+  \subsection{Categorías $C_{A,B}$}
+  \subsection{Producto y coproducto}
+  \subsection{Casos particulares}
+  
+\newpage
+\section {Functores}
+  Una aplicación entre categorías, preservando su estructura, es un functor.
+  \definition Sean $\mathcal{A}, \mathcal{B}$ categorías. Un \textbf{functor} 
+  $F: \mathcal{A} \rightarrow \mathcal{B}$ está formado por:
+  \begin{itemize}
+   \item Una función entre objetos $F: Obj(\mathcal{A}) \rightarrow Obj(\mathcal{B})$
+   \item Una función entre morfismos $F: Hom_\mathcal{A}(A,A') \rightarrow Hom_\mathcal{B}(F(A),F(A'))$
+  \end{itemize}
+  Cumpliendo:
+  \begin{itemize}
+   \item Respeta la composición: $F(f' \circ f) = F(f') \circ F(f)$
+   \item Respeta la identidad: $F(1_A) = 1_{F(A)}$
+  \end{itemize}
+
+  
+  Es decir, el functor lleva objetos de una categoría a objetos de otra y los morfismos
+  entre objetos de una categoría a morfismos de entre las imágenes de los objetos en la
+  otra categoría.
+
+  \subsection {Functores de olvido}
+    Un ejemplo de functores son los informalmente llamados functores de olvido,
+    que \textit{olvidan} propiedades de una categoría al llevarla a otra mediante
+    una inclusión.
+    
+    \example El functor $U: \mathtt{Grp} \rightarrow \mathtt{Set}$ que olvida la
+    estructura de grupo. $U(G)$ es el conjunto de elementos del grupo $G$ y $U(\phi)$
+    es la aplicación $\phi$ entre conjuntos, sin verla como un homomorfismo.
+    
+  \subsection {Functores libres}
+    Los functores libres 
+ 
+\newpage
+\section {Transformaciones naturales}
+  \definition Una transformación natural $\alpha$ entre dos functores $F,G: \C \rightarrow \mathcal{D}$
+  viene determinada por:
+  \begin{itemize}
+   \item Para cada $X \in \C$, un morfismo: \, $\alpha_X : F(X) \rightarrow G(X)$
+  \end{itemize}
+  Cumpliendo que:
+  \begin{itemize}
+   \item Para cualquier morfismo $f \in Hom(X,Y)$ se tenga: \, $\alpha_Y \circ Ff = Gf \circ \alpha_X$
+  \end{itemize}
+  Lo que queda representado en el siguiente diagrama conmutativo de naturalidad:
+  \begin{center}
+  \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+    \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+    { FX & GX \\
+      FY & GY \\ };
+    \path[->,font=\scriptsize]
+    (m-1-1) edge node[auto] {$ \alpha_X $} (m-1-2)
+    (m-2-1) edge node[auto] {$ \alpha_Y $} (m-2-2)
+    (m-1-2) edge node[auto] {$ Gf $} (m-2-2)
+    (m-1-1) edge node[auto,swap] {$ Ff $} (m-2-1);
+  \end{tikzpicture}
+  \end{center}
+
+\newpage
+\section {Representables y el lema de Yoneda}
 
 \end{document}
 
