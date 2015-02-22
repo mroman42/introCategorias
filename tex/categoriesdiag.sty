@@ -11,16 +11,16 @@
 %%  DIAGRAM MACROS
 \usepackage{xparse}
 \usepackage{etoolbox}
-\newcounter{listtotal}
-\newcounter{listcntr}
+\newcounter{listtotal2}
+\newcounter{listcntr2}
 \NewDocumentCommand{\argument}{o}{%
-  \setcounter{listtotal}{0}\setcounter{listcntr}{-1}%
-  \renewcommand*{\do}[1]{\stepcounter{listtotal}}%
+  \setcounter{listtotal2}{0}\setcounter{listcntr2}{-1}%
+  \renewcommand*{\do}[1]{\stepcounter{listtotal2}}%
   \expandafter\docsvlist\expandafter{\argumentarray}%
   \IfNoValueTF{#1}
     {\namesarray}% \names
     {% \names[<index>]
-     \renewcommand*{\do}[1]{\stepcounter{listcntr}\ifnum\value{listcntr}=#1\relax##1\fi}%
+     \renewcommand*{\do}[1]{\stepcounter{listcntr2}\ifnum\value{listcntr2}=#1\relax##1\fi}%
      \expandafter\docsvlist\expandafter{\argumentarray}}%
 }
 

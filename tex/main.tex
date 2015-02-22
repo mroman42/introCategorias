@@ -796,6 +796,140 @@ and limitations under the License.\\ % License information
     se quedarán fuera de lo que se expone aquí.
  
 
+\chapter {Functores}
+  \section{La categoría opuesta}
+  Hasta ahora, pudiera parecer que estamos repitiendo trabajo. Todo lo hemos definido dos veces,
+  una vez sobre cada dirección. Composición a izquierda y derecha, monomorfismos y epimorfismos,
+  objetos iniciales y finales, productos y coproductos. 
+  
+  Vamos a definir ahora la categoría $\C^{op}$ como la categoría opuesta de $\C$. Intuitivamente,
+  es la categoría que se obtiene invirtiendo el sentido de todos los morfismos. Formalmente,
+  esta categoría está formada por:
+  \begin{itemize}
+   \item $Obj(\C^{op}) = Obj(\C)$
+   \item $Hom_{\C^{op}}(A,B) = Hom_{\C}(B,A)$, para cualesquiera $A,B \in Obj(\C^{op})$
+  \end{itemize}
+  La composición de morfismos es aquí trivial si tenemos en cuenta que hemos dado la vuelta
+  a los morfismos:
+  \begin{gather*}
+   \forall f^{op} \in Hom(B,A), g^{op} \in Hom(C,B):\quad f^{op} \circ g^{op} = (g \circ f)^{op}
+  \end{gather*}
+  Como podemos observar en estos dos diagramas:
+  \begin{center}
+    \begin{tabular}{cc}
+      \begin{tikzcd}
+	A \arrow{r}{f} \arrow[bend right]{rr}[swap]{g\circ f} &
+	B \arrow{r}{g} &
+	C
+      \end{tikzcd}
+      &
+      \begin{tikzcd}
+	A  &
+	B \arrow{l}[swap]{f^{op}} &
+	C \arrow{l}[swap]{g^{op}} \arrow[bend left]{ll}{f^{op} \circ g^{op}}
+      \end{tikzcd}
+    \end{tabular}
+  \end{center}
+
+  \begin{exercise} 
+    Comprobar que la categoría opuesta forma una categoría.
+  \end{exercise}
+  \begin{exercise} 
+    Definir el objeto final y el coproducto en términos del inicial y el producto 
+    respectivamente, usando la categoría opuesta.
+  \end{exercise}
+  \begin{exercise} 
+    Probar que un monomorfismo en una categoría es epimorfismo en la opuesta
+    y que los isomorfismos se mantienen también en la categoría opuesta.
+  \end{exercise}
+
+ 
+  \section {Functores}
+  Una aplicación entre categorías, preservando su estructura, es un functor.
+  \begin{definition} Sean $\mathcal{A}, \mathcal{B}$ categorías. Un \textbf{functor} 
+  $F: \mathcal{A} \rightarrow \mathcal{B}$ está formado por:
+  \begin{itemize}
+   \item Una función entre objetos $F: Obj(\mathcal{A}) \rightarrow Obj(\mathcal{B})$
+   \item Una función entre morfismos $F: Hom_\mathcal{A}(A,A') \rightarrow Hom_\mathcal{B}(F(A),F(A'))$
+  \end{itemize}
+  Cumpliendo:
+  \begin{itemize}
+   \item Respeta la composición: $F(f' \circ f) = F(f') \circ F(f)$
+   \item Respeta la identidad: $F(1_A) = 1_{F(A)}$
+  \end{itemize}
+  \end{definition}
+
+  Es decir, el functor lleva objetos de una categoría a objetos de otra y los morfismos
+  entre objetos de una categoría a morfismos de entre las imágenes de los objetos en la
+  otra categoría.
+
+  \subsection {Ejemplos}
+    \subsubsection{Cardinalidad}
+      La cardinalidad, que relaciona el orden parcial de los conjuntos finitos con el
+      orden total entre los naturales, puede verse como un functor:
+      \begin{align*}
+	\#&: \mathtt{(FiniteSet,\subseteq)} \rightarrow \mathtt{(\mathbb{N},\leq)} \\
+	\#&(A) = (cardinalidad\ de\ A) \\
+	\#&(A \subseteq B) = \#(A) \leq \#(B) 
+      \end{align*}
+    
+    \subsubsection{Endofunctores}
+      Un endofunctor es aquel que va de una categoría hacia sí misma. Un ejemplo
+      puede ser una función lineal con determinante positivo en $\mathbb{Z}$:
+      \begin{align*}
+       (\lambda)&: \mathtt{(\mathbb{Z},\leq)} \rightarrow \mathtt{(\mathbb{Z},\leq)} \\
+       (\lambda)&(n) = \lambda n \\
+       (\lambda)&(p \leq q) = (\lambda p \leq \lambda q)
+      \end{align*}
+
+  
+  \subsection {Functores de olvido}
+    Un ejemplo de functores son los informalmente llamados functores de olvido,
+    que \textit{olvidan} propiedades de una categoría al llevarla a otra mediante
+    una inclusión.
+    
+    \begin{example} El functor $U: \mathtt{Grp} \rightarrow \mathtt{Set}$ que olvida la
+    estructura de grupo. $U(G)$ es el conjunto de elementos del grupo $G$ y $U(\phi)$
+    es la aplicación $\phi$ entre conjuntos, sin verla como un homomorfismo.
+    \end{example}
+    
+  \subsection {Functores libres}
+    Los functores libres hacen un papel inverso a los functores de olvido.
+    Informalmente, llevan una categoría hacia otra con más información dotándola del mínimo
+    contexto posible.
+    
+    \begin{example} El functor $F: \mathtt{Set} \rightarrow \mathtt{Grp}$ lleva cada conjunto $X$
+    al grupo libre generado por los elementos de $X$, es decir, al grupo de palabras
+    reducidas formadas con elementos de $X$. Las funciones entre conjuntos se convierten
+    trivialmente en homomorfismos entre sus grupos libres generados.
+    \end{example}
+
+\section {Transformaciones naturales}
+  \begin{definition} 
+    Una transformación natural $\alpha$ entre dos functores $F,G: \C \rightarrow \mathcal{D}$
+    viene determinada por:
+    \begin{itemize}
+    \item Para cada $X \in \C$, un morfismo: \, $\alpha_X : F(X) \rightarrow G(X)$
+    \end{itemize}
+    Cumpliendo que:
+    \begin{itemize}
+    \item Para cualquier morfismo $f \in Hom(X,Y)$ se tenga: \, $\alpha_Y \circ Ff = Gf \circ \alpha_X$
+    \end{itemize}
+  \end{definition}
+  Lo que queda representado en el siguiente diagrama conmutativo de naturalidad:
+  \begin{center}
+  \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+    \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+    { FX & GX \\
+      FY & GY \\ };
+    \path[->,font=\scriptsize]
+    (m-1-1) edge node[auto] {$ \alpha_X $} (m-1-2)
+    (m-2-1) edge node[auto] {$ \alpha_Y $} (m-2-2)
+    (m-1-2) edge node[auto] {$ Gf $} (m-2-2)
+    (m-1-1) edge node[auto,swap] {$ Ff $} (m-2-1);
+  \end{tikzpicture}
+  \end{center}
+ 
 %----------------------------------------------------------------------------------------
 %	CHAPTER 2
 %----------------------------------------------------------------------------------------
