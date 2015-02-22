@@ -107,18 +107,17 @@
 %%  DIAGRAM MACROS
 \usepackage{xparse}
 \usepackage{etoolbox}
-%\newtheorem{exca}[theorem]{Ejercicio}
-% \newcounter{listtotal}\newcounter{listcntr}%
-% \NewDocumentCommand{\argument}{o}{%
-%   \setcounter{listtotal}{0}\setcounter{listcntr}{-1}%
-%   \renewcommand*{\do}[1]{\stepcounter{listtotal}}%
-%   \expandafter\docsvlist\expandafter{\argumentarray}%
-%   \IfNoValueTF{#1}
-%     {\namesarray}% \names
-%     {% \names[<index>]
-%      \renewcommand*{\do}[1]{\stepcounter{listcntr}\ifnum\value{listcntr}=#1\relax##1\fi}%
-%      \expandafter\docsvlist\expandafter{\argumentarray}}%
-% }
+\newcounter{listtotal}\newcounter{listcntr}%
+\NewDocumentCommand{\argument}{o}{%
+  \setcounter{listtotal}{0}\setcounter{listcntr}{-1}%
+  \renewcommand*{\do}[1]{\stepcounter{listtotal}}%
+  \expandafter\docsvlist\expandafter{\argumentarray}%
+  \IfNoValueTF{#1}
+    {\namesarray}% \names
+    {% \names[<index>]
+     \renewcommand*{\do}[1]{\stepcounter{listcntr}\ifnum\value{listcntr}=#1\relax##1\fi}%
+     \expandafter\docsvlist\expandafter{\argumentarray}}%
+}
 
 %% Product Object
 % 1-9:  A, B, Z, AxB, pa, pb, f, g, fxg
@@ -301,43 +300,544 @@ and limitations under the License.\\ % License information
     \smallskip 
     \textit{Diagramas conmutativos de las propiedades básicas.} \\
 
-\section{Texto en castellano con acentuación}\index{Texto en castellano con acentuación}
+  \section{Ejemplos de categorías}
+    Como idea simplificadora, podemos pensar que los objetos son conjuntos, y los morfismos, funciones
+    entre esos conjuntos; de hecho, el primer ejemplo es la definición de ese caso concreto. 
+    Este es un buen modelo intuitivo para trabajar con algunas categorías,
+    pero presentaremos ejemplos que rechazan esta intuición.
+    \subsubsection{Categoría \texttt{Set}}
+      La categoría de los conjuntos con las funciones entre conjuntos como morfismos.
+      \begin{gather*}
+        Obj(\texttt{Set}) = Clase\ de\ todos\ los\ conjuntos \\
+        Hom(A,B)= B^A = \{f \;|\; f: A \rightarrow B \}
+      \end{gather*}
+      Trivialmente es categoría: las funciones se componen en funciones, la composición es
+      asociativa y la identidad funciona como se espera, siendo otra función.
+      
+    \subsubsection{Categoría \texttt{VectR}}
+      La categoría de los espacios vectoriales reales con las funciones lineales entre
+      espacios vectoriales reales.
+      \begin{gather*}
+        Obj(\texttt{VectR}) = Clase\ de\ espacios\ vectoriales\ sobre\ \mathbb{R} \\
+        Hom(A,B)= \mathcal{L}_{\mathbb{R}}(A,B)
+      \end{gather*}
+      \begin{exercise} 
+	Observar que \texttt{VectR} es una categoría.
+      \end{exercise}
 
-Este frase contiene signos acentuación, eñes, ¿y signos de interrogación?
+    
+    \subsubsection{Categoría \texttt{$(S,\sim)$}}
+      Cualquier conjunto $S$ que tenga definida una relación de equivalencia $\sim$ tiene
+      definida una categoría asociada en la que los objetos son los elementos del conjunto
+      y los morfismos sólo representan casos particulares de la relación de equivalencia.
+      \textit{En este ejemplo, los morfismos no son funciones y los objetos no son conjuntos,
+      rechazando por primera vez la intuición del primer ejemplo.}
+      \begin{gather*}
+        Obj((S,\sim)) = S
+      \end{gather*}
+      Hay un morfismo entre dos elementos si y sólo si están relacionados:
+      \begin{align*}
+        Hom(a,b)= \twopartdef{(a,b)}{a \sim b}{\emptyset}{a \nsim b}
+      \end{align*}
+      
+\chapter{Tipos de morfismos}
+  \section {Isomorfismos}
+    \begin{definition}
+      Un morfismo $f \in Hom(A,B)$ es \textbf{isomorfismo} si existe un morfismo inverso:
+	$g \in Hom(B,A)$ cumpliendo:
+      \begin{gather*}
+	(g \circ f) = 1_A \qquad (f \circ g) = 1_B
+      \end{gather*}
+    \end{definition}
 
-\section{Citation}\index{Citation}
 
-This statement requires citation \cite{book_key}; this one is more specific \cite[122]{article_key}.
+    
+    \begin{exercise} 
+      Probar que el inverso, si existe, es único. Lo notaremos como $f^{-1}$. Observar que si
+      existe un inverso por la derecha y un inverso por la izquierda, deben ser iguales.
+    \end{exercise}
 
-%------------------------------------------------
+    
+    \subsection{Propiedades de isomorfismos}
+      \begin{itemize}
+       \item La identidad es isomorfismo: $(1)^{-1} = 1$ 
+       \item El inverso de un isomorfismo es isomorfismo: $(f^{-1})^{-1} = f$.
+       \item La composición de isomorfismos es isomorfismo: $(g \circ f)^{-1} = f^{-1} \circ g^{-1}$
+      \end{itemize}
 
-\section{Lists}\index{Lists}
+    Dos objetos $A,B$ son \textbf{isomorfos} si existe un isomorfismo en $Hom(A,B)$, la isomorfía se
+    nota como $A \cong B$ y es, por las propiedades anteriores, una relación de equivalencia.
+      
+    Nótese que, precisamente, los isomorfismos de \texttt{Set} son las biyecciones entre conjuntos.
+    Los isomorfismos de \texttt{Top} son los homeomorfismos y los isomorfismos de \texttt{Met} son
+    las isometrías.
+    
+  \section {Epimorfismos y monomorfismos}
+    \begin{definition} 
+      Un morfismo $f \in Hom(A,B)$ es \textbf{monomorfismo} si para cualquier objeto $C$ y
+      para cada par de morfismos $g,h: C \rightarrow A$, el morfismo puede \textit{cancelarse} a la izquierda:
+      \begin{gather*}
+	f \circ g = f \circ h \quad \Rightarrow \quad g = h
+      \end{gather*}
+    \end{definition}
 
-Lists are useful to present information in a concise and/or ordered way\footnote{Footnote example...}.
+    Es decir, si el siguiente diagrama conmuta y $f$ es monomorfismo, entonces $g=h$.
+    \begin{center}
+     \begin{tikzcd}
+       C \arrow[bend left]{r}{g} \arrow[bend right]{r}{h} & A \arrow[tail]{r}{f} & B
+     \end{tikzcd}
+    \end{center}
+    
+    \begin{definition} 
+      Análogamente, un morfismo $f \in Hom(A,B)$ es \textbf{epimorfismo} si para cualquier objeto $C$ y
+      para cada par de morfismos $g,h: B \rightarrow C$, el morfismo puede \textit{cancelarse} a la derecha:
+      \begin{gather*}
+	g \circ f = h \circ f \quad \Rightarrow \quad g = h
+      \end{gather*}
+    \end{definition}
 
-\subsection{Numbered List}\index{Lists!Numbered List}
+    De nuevo, si el siguiente diagrama conmuta y $f$ es epimorfismo, entonces $g=h$.
+    %% A - B = C %%
+    \begin{center}
+     \begin{tikzcd}
+       A \arrow[two heads]{r}{f} & B \arrow[bend left]{r}{g} \arrow[bend right]{r}{h} & C
+     \end{tikzcd}
+    \end{center}
+    
+  \section {Ejemplos en varias categorías}
+    \subsection{Categoría \texttt{Set}}
+      En la categoría de los conjuntos, los isomorfismos son las funciones con inversa; lo
+      que coincide con la definición de isomorfismos entre conjuntos. Dos conjuntos son
+      isomorfos si tienen la misma cardinalidad.
+      Los monomorfismos se corresponden con las funciones inyectivas y los epimorfismos con
+      las funciones sobreyectivas.
+    
+    \subsection{Categoría \texttt{$(\mathbb{Z},\leq)$}}
+      En esta categoría, los únicos isomorfismos son las identidades. Nótese además
+      que todos los morfismos son monomorfismos y epimorfismos, y, aun así, no son
+      isomorfismos. Esto sirve de nuevo para no aceptar directamente la intuición
+      guiada por la clase \texttt{Set}, donde morfismos que sean monomorfismos y
+      epimorfismos deben ser isomorfismos.
+      Y la composición se define como:
+      \begin{align*}
+       (a,b) \circ (b,c) = (a,c)
+      \end{align*}
+      Probar que es categoría se reduce a notar que la composición de morfismos es morfismo (por
+      ser la relación transitiva), que la composición es asociativa y que existe el morfismo identidad
+      $(a,a)$, por ser la relación reflexiva.
+     
+    \subsection{Categoría \texttt{$(S,\leq)$}}
+      Cualquier conjunto parcialmente ordenado tiene una categoría asociada. Los objetos
+      son sus elementos y los morfismos son casos particulares de la relación de orden.
+      \begin{gather*}
+        Obj((S,\leq)) = S
+      \end{gather*}
+      Hay un morfismo entre $a$ y $b$ si y sólo si $a \leq b$:
+      \begin{align*}
+        Hom(a,b)= \twopartdef{(a,b)}{a \leq b}{\emptyset}{\mbox{no}}
+      \end{align*}
+      La composición se define como anteriormente: $(a,b) \circ (b,c) = (a,c)$, y es
+      trivial volver a probar que se trata de una categoría.
+      \medskip
+      
+      Un posible diagrama conmutativo de la categoría \texttt{$(\mathbb{N},\leq)$} sería:
+      \begin{center}
+        \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+	  \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+	  { 1 & 3 & 5 \\ & 6 & 7 \\ };
+	  \path[->,font=\scriptsize]
+	  (m-1-1) edge node[auto] {$ (1,3) $} (m-1-2)
+	  (m-1-2) edge node[auto] {$ (3,6) $} (m-2-2)
+	  (m-2-2) edge node[auto] {$ (6,7) $} (m-2-3)
+	  (m-1-1) edge node[auto,swap] {$ (1,6) $} (m-2-2)
+	  (m-1-2) edge node[auto] {$ (3,5) $} (m-1-3)
+	  (m-1-3) edge node[auto] {$ (5,7) $} (m-2-3);
+	\end{tikzpicture}
+      \end{center}
+ 
 
-\begin{enumerate}
-\item The first item
-\item The second item
-\item The third item
-\end{enumerate}
+\chapter{Propiedades universales}
+  Varias construcciones en las diversas estructuras que motivaron las categorías pueden parecer
+  escogidas arbitrariamente. Sin embargo, la definición de las propiedades universales las dejará
+  como las únicas cumpliendo una construcción formal no arbitraria. Además, nos permitirá descubrir
+  relaciones más profundas entre las construcciones en las distintas categorías.
+  
+  \section {Objetos terminales}
+    \begin{definition}
+      El objeto $I \in Obj(\C)$ se dice \textbf{inicial} cuando a cualquier otro objeto llega
+      un único morfismo desde él. Es decir:
+      \begin{gather*}
+	\forall A \in Obj(\C):\quad \#(Hom(I,A)) = 1
+      \end{gather*}
+    \end{definition}
+ 
 
-\subsection{Bullet Points}\index{Lists!Bullet Points}
+    \begin{definition}
+      Análogamente, el objeto $F \in Obj(\C)$ se dice \textbf{final} cuando desde cualquier otro objeto llega
+      un único morfismo hacia él. Es decir:
+      \begin{gather*}
+	\forall A \in Obj(\C):\quad \#(Hom(A,F)) = 1
+      \end{gather*}
+    \end{definition}
+ 
+    
+    Se llama \textbf{objeto terminal} a un objeto inicial o final y \textbf{objeto cero} a un objeto
+    terminal y final. Una categoría no tiene por qué
+    tener objetos terminales, y estos no tienen por qué ser únicos. Pero serán \textit{esencialmente únicos},
+    es decir, si dos objetos son ambos iniciales o ambos finales en una categoría, serán isomorfos,
+    como demostramos a continuación.
+    
+    \begin{theorem} Los objetos iniciales y los objetos finales de una
+    categoría son esencialmente únicos:
+      \begin{itemize}
+	\item Si $I_1,I_2$ son iniciales, $I_1 \cong I_2$
+	\item Si $F_1,F_2$ son finales, $F_1 \cong F_2$
+      \end{itemize}
+    \end{theorem}
 
-\begin{itemize}
-\item The first item
-\item The second item
-\item The third item
-\end{itemize}
+    \begin{proof}
+      Para $I_1,I_2$ iniciales, debe cumplirse que existe un sólo $f \in Hom(I_1,I_2)$
+      y que existe un sólo $g \in Hom(I_2,I_1)$. Como en $Hom(I_1,I_1)$ y en $Hom(I_2,I_2)$ sólo existe un morfismo,
+      que debe ser la identidad, tenemos:
+      \begin{gather*}
+	g \circ f = 1_{I_1} \quad f \circ g = 1_{I_2}
+      \end{gather*}
+      Por lo que son isomorfismos y $I_1 \cong I_2$. Análogamente se prueba para objetos finales.
+    \end{proof}
+    
+  \section {Ejemplos}
+    \subsection {Objetos terminales en \texttt{Set}}
+      En la categoría $\mathtt{Set}$, es objeto inicial el conjunto vacío: para cualquier otro
+      conjunto $A$, $Hom(\emptyset, A)$ consta sólo de la inclusión (la función vacía), que 
+      podemos notar por $(\emptyset)$. \\
+      Todos los conjuntos de un sólo elemento son finales. Sólo hay un morfismo $c_\ast \in Hom(A,\{\ast\})$,
+      la función constantemente $\ast$. Obsérvese que entre ellos, todos los conjuntos de un elemento
+      son isomorfos como afirma el teorema anterior.
+    
+    \subsection {Objetos terminales en \texttt{Grp}}
+      Entre los grupos, un homomorfismo debe llevar siempre la identidad hacia la identidad
+      del otro grupo, y además, no existe el grupo vacío. Esto hace que el objeto terminal
+      y final de la categoría sea el grupo que tiene como único elemento la identidad, $\{e\}$.
+      Hacia cualquier otro grupo existe un único homomorfismo (la imagen de la identidad debe ser
+      la identidad), y desde cualquier otro grupo existe un único homomorfismo (la función 
+      constantemente $e$).
+    
+    \subsection {Objetos terminales en $(\mathbb{N},\leq)$}
+      En esta categoría, $0$ es trivialmente objeto inicial y no hay objetos finales.
+      Nótese además que en $(\mathbb{Z},\leq)$ no habría ningún objeto terminal. En general,
+      en una categoría $(S,\leq)$, los objetos terminales son el máximo y el mínimo, que
+      no tienen por qué existir.
+    
+    \subsection {Proyección al cociente}
+      Dado un conjunto $A$, con una relación de equivalencia $\sim$ definimos una categoría
+      que tenga por objetos las funciones (!) que preserven la relación de equivalencia.
+      Es decir, las funciones de la forma:
+      \begin{center}
+	\begin{tikzcd}%[scale=0.5]
+	    Z \\
+	    A \arrow{u}{f}
+	\end{tikzcd}
+      \end{center}
+      Para $Z$ conjunto y $f \in Hom(A,Z)$, cumpliendo $[a]_{\sim} = [b]_{\sim} \Rightarrow f(a) = f(b)$.
+      
+      Los morfismos entre dos objetos $Hom((Z,f), (W,g))$ de esta categoría serán los diagramas
+      conmutativos de la siguiente forma.
+      \begin{center}
+       \begin{tikzcd}
+         Z \arrow{r}{\phi} & W \\
+         A \arrow{u}{f} \arrow{ur}[swap]{g}
+       \end{tikzcd}
+      \end{center}
+      Donde, para que se cumpla el diagrama, debería tenerse: $\phi \circ f = g$.
+      
+      Y la composición entre morfismos es el exterior de la composición de los dos diagramas
+      conmutativos, que vuelve a ser diagrama conmutativo:
+      \begin{center}
+	\begin{tabular}{ccccc}
+	  
+	  $\left(
+	  \begin{tikzcd}
+	    & W \arrow{d}{\psi} \\
+	    A \arrow{ur}{g} \arrow{r}[swap]{h} & V
+	  \end{tikzcd}
+	  \right)$
+	  &
+	  $\circ$
+	  &
+	  $\left(
+	  \begin{tikzcd}
+	    Z \arrow{r}{\phi} & W \\
+	    A \arrow{u}{f} \arrow{ur}[swap]{g}
+	  \end{tikzcd}
+	  \right)$
+	  &
+	  $=$
+	  &
+	  $\left(
+	  \begin{tikzcd}
+	    Z \arrow[bend left]{dr}{\psi \circ \phi} \\
+	    A \arrow{u}{f} \arrow{r}[swap]{h} & V
+	  \end{tikzcd}
+	  \right)$
+	  
+	\end{tabular}
+      \end{center}
+      
+      La construcción de esta categoría puede parecer sorprendente y artificial, pero
+      pronto usaremos construcciones similares para obtener propiedades básicas.
+      Por ahora, basta notar que en esta categoría, la proyección al cociente $(A/_\sim,\sim)$
+      es el objeto inicial:
+      \begin{center}
+       \begin{tikzcd}
+         A/_\sim \arrow{r}{\exists! \tilde f} & Z \\
+	 A \arrow{u}{\pi_\sim} \arrow{ur}[swap]{f}
+       \end{tikzcd}
+      \end{center}
 
-\subsection{Descriptions and Definitions}\index{Lists!Descriptions and Definitions}
+      \begin{proof}
+	Definimos $\tilde f ([x]_\sim) = f(x)$. Comprobamos que está bien definida porque
+	exigíamos a las funciones que cumplieran $[a]_{\sim} = [b]_{\sim} \Rightarrow f(a) = f(b)$.
+	
+	El diagrama es conmutativo trivialmente: $\tilde f \circ \pi = f$
+      \end{proof} 
+ 
 
-\begin{description}
-\item[Name] Description
-\item[Word] Definition
-\item[Comment] Elaboration
-\end{description}
+ \section {Productos y coproductos}
+  \subsection{Producto}
+    El producto de dos objetos en una categoría se definirá como otro objeto tal
+    que una pareja de morfismos que vaya desde un tercer objeto hacia los dos objetos pueda descomponerse
+    de manera única a través de su objeto producto.
+    En términos de diagramas conmutativos, para $A,B \in Obj(\C)$, su objeto producto,
+    $A \times B$ cumple que, para cualquier $Z \in Obj(\C)$ que se descomponga así,
+    existe un único morfismo $\phi$ que lo lleva al producto:
+    \begin{center}
+%     \productCD{ 
+%       A,B,Z,A \times B,
+%       \pi_A,\pi_B,f,g, \exists! \phi
+%     }
+    \end{center}
+    A ese morfismo $\phi$ que es único lo llamaremos $f \times g$.
+    
+    \begin{example} 
+      En la categoría \texttt{Set}, el producto de dos conjuntos es el producto
+      usual: $A \times B = \{(a,b) \; | \; a \in A, \; b \in B \}$. Si tenemos otro conjunto $Z$
+      con dos funciones $f,g$ hacia $A$ y hacia $B$, existe una única función hacia $A \times B$
+      que hace el diagrama conmutativo, la función:
+      \begin{gather*}
+      (f \times g)(z) = (f(z),g(z)) \quad \forall z \in Z
+      \end{gather*}
+      Aquí, las funciones $\pi_A$, $\pi_B$, son las proyecciones usuales desde el producto.
+      Es decir, el siguiente diagrama es conmutativo:
+      \begin{center}
+      \productCD { 
+	A,B,Z,A \times B,
+	\pi_A,\pi_B,f,g,f \times g
+      }
+      \end{center}
+    \end{example}
+    
+    \begin{exercise} 
+      Demostrar que $f \times g$ es efectivamente la única función que hace que el
+      diagrama conmute.
+    \end{exercise}
+
+    
+    Esta primera definición puede ser reescrita de forma que además se demuestre automáticamente
+    la unicidad esencial del objeto producto en el caso de existir. Recurrimos para ello a
+    definir una categoría parecida a la que usamos para definir la proyección al cociente.
+  
+  \subsection{Categorías \texorpdfstring{$\C_{A,B}$}{C A,B}}
+    Dados objetos $A,B \in Obj(\C)$ para una categoría $\C$. Definimos la categoría $\C_{A,B}$
+    como la categoría teniendo por objetos los diagramas de la forma:
+    \begin{center}
+      \begin{tikzcd}[column sep=tiny]
+	& Z \arrow{dl}[swap]{f_A} \arrow{dr}{f_B} & \\
+	A & & B
+      \end{tikzcd}
+    \end{center}
+    Donde $Z$ es otro objeto con dos morfismos $f_A,f_B$ hacia $A$ y $B$.
+    
+    Y teniendo por morfismos las funciones $\phi$ en diagramas conmutativos de la siguiente forma:
+    \begin{center}
+      \begin{tikzcd}[column sep=tiny]
+        & V \arrow[bend right]{ddl}[swap]{g_A} \arrow[bend left]{ddr}{g_B} \arrow{d}{\phi} & \\
+	& Z \arrow{dl}[swap]{f_A} \arrow{dr}{f_B} & \\
+	A & & B
+      \end{tikzcd}
+    \end{center}
+    
+    Que se componen como podría esperarse:
+    \begin{center}
+    	\begin{tabular}{ccccc}
+	
+	  $\left(
+	    \begin{tikzcd}[column sep=tiny]
+	      & V \arrow[bend right]{ddl}[swap]{g_A} \arrow[bend left]{ddr}{g_B} \arrow{d}{\psi} & \\
+	      & W \arrow{dl}[swap]{h_A} \arrow{dr}{h_B} & \\
+	      A & & B
+	    \end{tikzcd}
+	  \right)$
+	  &
+	  $\circ$
+	  &
+	  $\left(
+	    \begin{tikzcd}[column sep=tiny]
+	      & Z \arrow[bend right]{ddl}[swap]{f_A} \arrow[bend left]{ddr}{f_B} \arrow{d}{\phi} & \\
+	      & V \arrow{dl}[swap]{g_A} \arrow{dr}{g_B} & \\
+	      A & & B
+	    \end{tikzcd}
+	  \right)$
+	  &
+	  $=$
+	  &
+	  $\left(
+	    \begin{tikzcd}[column sep=tiny]
+	      & Z \arrow[bend right]{ddl}[swap]{f_A} \arrow[bend left]{ddr}{f_B} \arrow{d}[description]{\psi \circ \phi} & \\
+	      & W \arrow{dl}[swap]{h_A} \arrow{dr}{h_B} & \\
+	      A & & B
+	    \end{tikzcd}
+	  \right)$
+	  
+	\end{tabular}
+    \end{center}
+    
+    Pues bien, se define el producto como el objeto final de esta categoría.
+    \begin{exercise} 
+      Comprobar que coincide con la definición anterior y observar que esto
+      prueba su unicidad esencial.
+    \end{exercise}
+    
+  \subsection{Coproducto}
+    Análogamente, el coproducto se define como el objeto final de la categoría $\C^{A,B}$,
+    que se forma intuitivamente invirtiendo la dirección de las flechas de la categoría $\C_{A,B}$.
+    Es decir, tendrá objetos de la forma:
+    \begin{center}
+      \begin{tikzcd}[column sep=tiny]
+	& Z & \\
+	A \arrow{ur}{f_A} & & B \arrow{ul}[swap]{f_B}
+      \end{tikzcd}
+    \end{center}
+    Y los morfismos y su composición se definirán análogamente.
+    El coproducto de $A$ y $B$, será $A \amalg B$ con dos morfismos $i_A,i_B$ cumpliendo
+    el diagrama conmutativo siguiente:
+    \begin{center}
+    \coproductCD{
+      A,B,Z,A \amalg B,
+      i_A,i_B,f,g, {(f,g)}     
+    }
+    \end{center}
+    
+    \begin{example} 
+      En la categoría \texttt{Set}, el coproducto es la unión disjunta de dos conjuntos: 
+      $A \amalg B \cong \{(a,1) \; | \; a \in A\} \cup \{(b,2) \; | \; b \in B \}$. Si tenemos otro conjunto $Z$
+      con dos funciones $f,g$ desde $A$ y desde $B$, existe una única función desde $A \amalg B$
+      que hace el diagrama conmutativo, la función:
+      \begin{gather*}
+      (f,g)((x,n)) = \twopartdef{f(x)}{n = 1}{g(x)}{n = 2}
+      \end{gather*}
+    \end{example}
+
+
+    
+  \subsection{Casos particulares}
+  \subsubsection{Categoría \texttt{Grp}}
+    En la categoría de los grupos, el producto será el producto usual conjuntista con el
+    producto de elementos definido componente a componente.
+    \begin{align*}
+     G_1 \times G_2 = \{(a,b)\; |\; a \in A,\; b \in B\} \\
+     (a,b) \ast (a',b') = (a \ast a', b \ast b')
+    \end{align*}
+
+    Y el coproducto será el producto libre de grupos, $G \ast H$, formado por las palabras
+    reducidas de elementos de ambos grupos. El producto de palabras es su yuxtaposición reducida.
+    \begin{align*}
+      G_1 \ast G_2 = \{a_1b_1a_2b_2\dots a_kb_k\; |\; a_i \in A,\; b_i \in B\} \\
+     (a_1b_1a_2b_2\dots a_kb_k) \ast (a'_1b'_1a'_2b'_2\dots a'_kb'_k) = (a_1b_1\dots a_kb_ka'_1b'_1\dots a'_kb'_k)
+    \end{align*}
+    
+  \subsubsection{Categoría \texttt{($S,\leq$)}}
+    En la categoría dada por una relación de orden puede demostarse que serán el producto
+    y el coproducto el ínfimo y el supremo, respectivamente.
+    \begin{center}
+      \begin{tabular}{cc}
+	\productCD { 
+	  a,b,c,{\inf\{a,b\}},
+	  , , , ,
+	}
+	&
+	\coproductCD{
+	  a,b,c,{\sup\{a,b\}},
+	  , , , ,     
+	}
+      \end{tabular}
+    \end{center}
+    
+   \subsubsection{Categoría \texttt{($\mathcal{P}(\Omega),\subseteq$)}}
+    Esta categoría es similar a la anterior, es un caso particular para subconjuntos
+    con la inclusión como relación de orden parcial. Un morfismo de $A$ hacia $B$ indica
+    que $B \subseteq A$. La intersección y la unión serán
+    aquí el producto y coproducto:
+    \begin{center}
+      \begin{tabular}{cc}
+	\productCD { 
+	  A,B,C,{A \cap B},
+	  , , , ,
+	}
+	&
+	\coproductCD{
+	  A,B,C,{A \cup B},
+	  , , , ,     
+	}
+      \end{tabular}
+    \end{center}
+  
+  \subsubsection{Categoría \texttt{Prop}}
+    Sea una categoría que tiene por objetos a las proposiciones lógicas. Existe un morfismo
+    desde una proposición a otra si la primera implica la otra, $A \Rightarrow B$.
+    En esta categoría, el producto y el coproducto son la conjunción y la disyunción lógicas:
+    \begin{center}
+      \begin{tabular}{cc}
+	\productCD { 
+	  A,B,Z,A \wedge B,
+	  , , , ,
+	}
+	&
+	\coproductCD{
+	  A,B,Z,A \vee B,
+	  , , , ,     
+	}
+      \end{tabular}
+    \end{center}
+    Aquí el producto y coproducto de morfismos (implicaciones) sería de la forma:
+    \begin{align*}
+     (Z \Rightarrow A) \times (Z \Rightarrow B) & = (Z \Rightarrow A \wedge B) \\
+     ((A \Rightarrow Z), (B \Rightarrow Z)) & = (A \vee B) \Rightarrow Z
+    \end{align*}
+    Nótese que en esta categoría, el objeto inicial es \texttt{False} y el objeto
+    inicial es \texttt{True}.
+    
+  \subsubsection{Categoría \texttt{Hask}}
+    Sea ahora la categoría de tipos de Haskell.\footnote{Aunque, hablando estrictamente, 
+    no sea ni siquiera una categoría, es interesante trabajar un poco en ella: \url{http://www.haskell.org/haskellwiki/Hask}} Los objetos son los posibles tipos
+    en Haskell y un morfismo entre dos objetos es una función que tome uno de los
+    tipos y devuelva el otro.
+    Tenemos los diagramas siguientes de producto y coproducto:
+        \begin{center}
+      \begin{tabular}{cc}
+	\productCD {
+	  \mathtt{a},\mathtt{b},\mathtt{c},{\quad \mathtt{(a,b)} \quad},
+	  \mathtt{fst}, \mathtt{snd}, \mathtt{f}, \mathtt{g}, \mathtt{f><g}
+	}
+	&
+	\coproductCD{
+	  a,b,c,\mathtt{Either\ a\ b},
+	  \mathtt{Left}, \mathtt{Right}, \mathtt{f}, \mathtt{g}, \mathtt{either\ f\ g}    
+	}
+      \end{tabular}
+    \end{center}
+    Hay ciertas similitudes entre las categorías de tipos y proposiciones que
+    se quedarán fuera de lo que se expone aquí.
+ 
 
 %----------------------------------------------------------------------------------------
 %	CHAPTER 2
