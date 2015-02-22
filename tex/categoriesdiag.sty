@@ -1,0 +1,73 @@
+% Conmutative diagrams
+%\usepackage{tkz-graph}
+%\usetikzlibrary{arrows}
+\usepackage{tikz}
+\usetikzlibrary{matrix,arrows}
+\tikzset{every loop/.style={min distance=10mm,in=0,out=60,looseness=10}}
+\usepackage{tikz-cd}
+\usetikzlibrary{cd}
+
+
+%%  DIAGRAM MACROS
+\usepackage{xparse}
+\usepackage{etoolbox}
+\newcounter{listtotal2}
+\newcounter{listcntr2}
+\NewDocumentCommand{\argument}{o}{%
+  \setcounter{listtotal2}{0}\setcounter{listcntr2}{-1}%
+  \renewcommand*{\do}[1]{\stepcounter{listtotal2}}%
+  \expandafter\docsvlist\expandafter{\argumentarray}%
+  \IfNoValueTF{#1}
+    {\namesarray}% \names
+    {% \names[<index>]
+     \renewcommand*{\do}[1]{\stepcounter{listcntr2}\ifnum\value{listcntr2}=#1\relax##1\fi}%
+     \expandafter\docsvlist\expandafter{\argumentarray}}%
+}
+
+%% Product Object
+% 1-9:  A, B, Z, AxB, pa, pb, f, g, fxg
+%%
+\newcommand{\productCD}[1]{
+  \def\argumentarray{#1}
+  \begin{tikzcd}[column sep=tiny, ampersand replacement=\&]
+      \& \argument[2] \arrow[dashed]{d}[description]{\argument[8]} \arrow[bend left]{ddr}{\argument[7]} \arrow[bend right]{ddl}[swap]{\argument[6]} \& \\
+      \& {\argument[3]} \arrow{dl}{\argument[4]} \arrow{dr}[swap]{\argument[5]} \& \\
+    \argument[0] \& \& \argument[1]
+  \end{tikzcd}
+}
+
+%% Coproduct Object
+% 1-9:  A, B, Z, AUB, ia, ib, f, g, (f,g)
+%%
+\newcommand{\coproductCD}[1]{
+  \def\argumentarray{#1}
+  \begin{tikzcd}[column sep=tiny, ampersand replacement=\&]
+      \& \argument[2] \& \\
+      \& {\argument[3]} \arrow[dashed]{u}[description]{\argument[8 ]} \& \\
+    \argument[0] \arrow[bend left]{uur}{\argument[6]} \arrow{ur}[swap]{\argument[4]}  \& \& \argument[1] \arrow[bend right]{uul}[swap]{\argument[7]} \arrow{ul}{\argument[5]}
+  \end{tikzcd}
+}
+
+%% Kernel Object
+% A, B, K, f, k, o
+%%
+\newcommand{\kernelCD}[1]{
+  \def\argumentarray{#1}
+  \begin{tikzcd}[ampersand replacement=\&]
+     \argument[0] \arrow{r}{\argument[3]} \& \argument[1] \\
+     \argument[2] \arrow{u}{\argument[4]} \arrow{ur}{\argument[5]}
+  \end{tikzcd}
+}
+
+%% Cokernel Object
+% A, B, Q, f, q, o
+%% 
+\newcommand{\cokernelCD}[1]{
+  \def\argumentarray{#1}
+  \begin{tikzcd}[ampersand replacement=\&]
+     \argument[0] \arrow{r}{\argument[3]} \arrow{dr}{\argument[5]} \& \argument[1] \arrow{d}{\argument[4]} \\
+     \& \argument[2]
+  \end{tikzcd}
+}
+
+
