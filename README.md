@@ -9,7 +9,7 @@ functores y las transformaciones naturales. El objetivo no es aportar otra
 explicación formal de la teoría de categoías, sino dar una idea general
 de los conceptos básicos.
 
-Índice de los apuntes:
+## Índice de los apuntes
 
 1. Categorías
 2. Tipos de morfismos
