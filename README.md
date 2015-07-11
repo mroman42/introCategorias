@@ -1,4 +1,4 @@
-introCategorias
+Introducción a la Teoría de Categorías
 ===============
 
 Varias estructuras matemáticas (grupos, espacios vectoriales, espacios topológicos...) cuentan con morfismos que preservan las estructuras subyacentes entre ellas. La teoría de categorías nació en 1942 e intenta reunir y formalizar ese tipo de estructuras, permitiendo además una fundación de las matemáticas distinta a la conjuntista usual.
