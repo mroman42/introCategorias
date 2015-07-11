@@ -9,4 +9,14 @@ functores y las transformaciones naturales. El objetivo no es aportar otra
 explicación formal de la teoría de categoías, sino dar una idea general
 de los conceptos básicos.
 
+Índice de los apuntes:
+
+1. Categorías
+2. Tipos de morfismos
+3. Propiedades universales
+4. Productos y coproductos
+5. La categoría opuesta
+6. Functores
+7. Transformaciones naturales
+
 Bajo licencia *CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)*.
