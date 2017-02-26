@@ -92,12 +92,12 @@
 %%% Twopart definition
 \newcommand{\twopartdef}[4]
 {
-	\left\{
-		\begin{array}{ll}
-			#1 & \mbox{si } #2 \\
-			#3 & \mbox{si } #4
-		\end{array}
-	\right.
+  \left\{
+    \begin{array}{ll}
+      #1 & \mbox{si } #2 \\
+      #3 & \mbox{si } #4
+    \end{array}
+  \right.
 }
 
 
@@ -120,8 +120,8 @@
 \node[anchor=north west,inner sep=0pt] at (0,0) {\includegraphics[width=\paperwidth]{background}}; % Background image
 \draw[anchor=north] (midpoint) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}
 {\centering Teoría de Categorías\\[15pt] % Book title
-{\Large Introducción y aplicación a la programación}\\[20pt] % Subtitle
-{\huge Mario Román}}}; % Author name
+{\Large Introducción}\\[20pt] % Subtitle
+{\Large Mario Román - LibreIM}}}; % Author name
 \end{tikzpicture}};
 \end{tikzpicture}
 \vfill
@@ -135,11 +135,9 @@
 ~\vfill
 \thispagestyle{empty}
 
-\noindent Copyright \copyright\ 2015 Mario Román\\ % Copyright notice
-
-\noindent \textsc{Doble Grado en Matemáticas e Informática de la Universidad de Granada}\\ % Publisher
-
-\noindent \textsc{dgiim.github.io}\\ % URL
+\noindent Copyright \copyright\ 2017 Mario Román\\ % Copyright notice
+\noindent \textsc{LibreIM}\\ % Publisher
+\noindent \textsc{tux.ugr.es/libreim}\\ % URL
 
 \noindent Licensed under the Creative Commons Attribution-NonCommercial 3.0 Unported License 
 (the ``License''). You may not use this file except in compliance with the License. You may 
@@ -149,7 +147,7 @@ is distributed on an \textsc{``as is'' basis, without warranties or conditions o
 either express or implied. See the License for the specific language governing permissions 
 and limitations under the License.\\ % License information
 
-\noindent \textit{First printing, March 2015} % Printing/edition date
+%\noindent \textit{First printing, March 2015} % Printing/edition date
 
 %----------------------------------------------------------------------------------------
 %	CONTENIDOS
@@ -174,146 +172,188 @@ and limitations under the License.\\ % License information
 \chapterimage{chapter_head_2.pdf} % Chapter heading image
 
 \chapter{Categorías}
-  \section{Motivación}\index{Motivación}
-    Varias estructuras matemáticas (grupos, espacios vectoriales, espacios topológicos \dots) cuentan
-    con morfismos que preservan las estructura subyacentes entre ellas. Como ejemplos:
-    \begin {center}
-    \begin{tabular}{l|l}
-      Conjunto & Morfismos \\
-      \hline
-      Grupos & Homomorfismos de grupos \\
-      Espacios topológicos & Funciones continuas \\
-      Espacios métricos & Funciones cortas \\
-      Conjuntos & Funciones \\
-      Espacios vectoriales sobre $\mathbb{K}$ & Funciones lineales sobre $\mathbb{K}$ \\
-    \end{tabular}
-    \end{center}
-    Si estudiamos axiomáticamente las propiedades abstractas de estas estructuras y sus morfismos,
-    obtendremos teoremas particularizables a todos estos casos, útiles por sí mismos.
-    Una categoría la formarán una clase de estos espacios con estructura y los morfismos entre estos
-    espacios; y los teoremas que deduzcamos para todas las categorías podrán aplicarse a cada uno de
-    los espacios.
 
-  \section {Definición formal}
-    \begin{definition}
-    Una \textbf{categoría} $\C$ está definida por:
-    \begin{itemize}
-      \item Una clase de objetos de la categoría, $Obj(\mathcal{C})$.
-      \item Un conjunto de morfismos $Hom_{\C}(A,B)$, poblado o no, entre cada par de objetos $A,B \in Obj(\C)$.
-    \end{itemize}
-    \end{definition}
+\section{Motivación}
+\index{Motivación}
 
-    Cumpliendo sus morfismos las siguientes propiedades:
-    \begin{itemize}
-      \item Para dos morfismos $f \in Hom(A,B)$, $g \in Hom(B,C)$, existe su morfismo composición $f \circ g$.
-      \item La composición es asociativa: $ f \circ (g \circ h) = (f \circ g) \circ h$
-      \item Todos los objetos tienen un morfismo identidad, $1_{A} \in Hom(A,A)$, 
-	  neutro para la composición: $\forall f \in Hom(A,B): f \circ 1_{A} = 1_{B} \circ f = f$
-    \end{itemize}
-    
-    \begin{exercise}
-      Demostrar que la identidad es el único elemento neutro para la composición.
-    \end{exercise}
+\subsection{Estructuras matemáticas}
+Varias estructuras matemáticas (grupos, espacios vectoriales, espacios
+topológicos \dots) cuentan con morfismos que preservan las estructuras
+subyacentes entre ellas. Como ejemplos:
+
+\begin{center}
+  \begin{tabular}{l|l}
+    Estructuras & Morfismos \\
+    \hline
+    Grupos & Homomorfismos de grupos \\
+    Espacios topológicos & Funciones continuas \\
+    Espacios métricos & Funciones cortas \\
+    Conjuntos & Funciones \\
+    Espacios vectoriales sobre $\mathbb{K}$ & Funciones lineales sobre $\mathbb{K}$ \\
+  \end{tabular}
+\end{center}
+
+Si estudiamos axiomáticamente las propiedades abstractas de estas estructuras y sus morfismos,
+obtendremos teoremas particularizables a todos estos casos, útiles por sí mismos.
+Una categoría la formarán una clase de estos espacios con estructura y los morfismos entre estos
+espacios; y los teoremas que deduzcamos para todas las categorías podrán aplicarse a cada uno de
+los espacios.
+
+\subsection{Composición}
+La categoría es una estructura algebraica que modela, de alguna forma,
+lo que puede ser componible. Las funciones entre conjuntos son un ejemplo
+básico pero no son el único: los programas de un lenguaje tipado se componen
+entre sí o las relaciones de orden (gracias a la transitividad) se componen
+entre sí.
+
+\begin{center}
+  \begin{tabular}{l|l}
+    Objetos & Morfismos \\
+    \hline
+    Tipos de datos & Funciones puras \\
+    Elementos ordenados & Relación de orden \\
+    Proposiciones & Implicaciones
+  \end{tabular}
+\end{center}
+
+
+\section {Definición formal}
+% Definición de categoría
+\begin{definition}
+  Una \textbf{categoría} $\C$ está definida por:
   
-    \begin{center}
-    	
-    
-    \begin{tabular}{ccc}
-        \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
-	  \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
-	  { A & B \\
-	     & C \\ };
-	  \path[->,font=\scriptsize]
-	  (m-1-1) edge node[auto] {$ f $} (m-1-2)
-	  (m-1-2) edge node[auto] {$ g $} (m-2-2)
-	  (m-1-1) edge node[auto,swap] {$ g \circ f $} (m-2-2);
-	\end{tikzpicture} &
-%         \begin{tikzcd}[inner sep=2.5pt, row sep=3em, column sep=3em]
-%           A \arrow{r}{f} \arrow{rd}[swap]{g \circ f} & B \arrow{d}{g} \\
-%           & C
-%         \end{tikzcd} &
-        
-        \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
-	  \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
-	  { A & B & \\ & C & D \\ };
-	  \path[->,font=\scriptsize]
-	  (m-1-1) edge node[auto] {$ f $} (m-1-2)
-	  (m-1-2) edge node[auto] {$ g $} (m-2-2)
-	  (m-2-2) edge node[auto] {$ h $} (m-2-3)
-	  (m-1-1) edge node[auto,swap] {$ g \circ f $} (m-2-2)
-	  (m-1-2) edge node[auto] {$ h \circ g $} (m-2-3);
-	\end{tikzpicture} &
+  \begin{itemize}
+  \item Una clase de objetos de la categoría, $Obj(\mathcal{C})$.
+  \item Un conjunto de morfismos $Hom_{\C}(A,B)$, poblado o no, entre
+    cada par de objetos $A,B \in Obj(\C)$.
+  \end{itemize}
+  
+\end{definition}
 
-        
-	
-        \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
-	  \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
-	  { A \\ };
-	  \path[->,font=\scriptsize]
-	  (m-1-1) edge[loop above] node[auto] {$ 1_A $} (m-1-1);
-	\end{tikzpicture}
-    \end{tabular}
-    \end{center}
-    \smallskip 
-    \textit{Diagramas conmutativos de las propiedades básicas.} \\
+Cumpliendo sus morfismos las siguientes propiedades:
 
-  \section{Ejemplos de categorías}
-    Como idea simplificadora, podemos pensar que los objetos son conjuntos, y los morfismos, funciones
-    entre esos conjuntos; de hecho, el primer ejemplo es la definición de ese caso concreto. 
-    Este es un buen modelo intuitivo para trabajar con algunas categorías,
-    pero presentaremos ejemplos que rechazan esta intuición.
-    \subsubsection{Categoría \texttt{Set}}
-      La categoría de los conjuntos con las funciones entre conjuntos como morfismos.
-      \begin{gather*}
-        Obj(\texttt{Set}) = Clase\ de\ todos\ los\ conjuntos \\
-        Hom(A,B)= B^A = \{f \;|\; f: A \rightarrow B \}
-      \end{gather*}
-      Trivialmente es categoría: las funciones se componen en funciones, la composición es
-      asociativa y la identidad funciona como se espera, siendo otra función.
-      
-    \subsubsection{Categoría \texttt{VectR}}
-      La categoría de los espacios vectoriales reales con las funciones lineales entre
-      espacios vectoriales reales.
-      \begin{gather*}
-        Obj(\texttt{VectR}) = Clase\ de\ espacios\ vectoriales\ sobre\ \mathbb{R} \\
-        Hom(A,B)= \mathcal{L}_{\mathbb{R}}(A,B)
-      \end{gather*}
-      \begin{exercise} 
-	Observar que \texttt{VectR} es una categoría.
-      \end{exercise}
+\begin{itemize}
+\item Para dos morfismos $f \in Hom(A,B)$, $g \in Hom(B,C)$, existe su
+  morfismo composición $f \circ g$.
+\item La composición es asociativa: $f \circ (g \circ h) = (f \circ g) \circ h$
+\item Todos los objetos tienen un morfismo identidad,
+  $1_{A} \in Hom(A,A)$, neutro para la composición:
+  $\forall f \in Hom(A,B): f \circ 1_{A} = 1_{B} \circ f = f$
+\end{itemize}
 
-    
-    \subsubsection{Categoría \texttt{$(S,\sim)$}}
-      Cualquier conjunto $S$ que tenga definida una relación de equivalencia $\sim$ tiene
-      definida una categoría asociada en la que los objetos son los elementos del conjunto
-      y los morfismos sólo representan casos particulares de la relación de equivalencia.
-      \textit{En este ejemplo, los morfismos no son funciones y los objetos no son conjuntos,
-      rechazando por primera vez la intuición del primer ejemplo.}
-      \begin{gather*}
-        Obj((S,\sim)) = S
-      \end{gather*}
-      Hay un morfismo entre dos elementos si y sólo si están relacionados:
-      \begin{align*}
-        Hom(a,b)= \twopartdef{(a,b)}{a \sim b}{\emptyset}{a \nsim b}
-      \end{align*}
-      
+\begin{exercise}
+  Demostrar que la identidad es el único elemento neutro para la
+  composición.
+\end{exercise}
+
+\begin{center}    
+  \begin{tabular}{ccc}
+    \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+      { A & B \\
+        & C \\ };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge node[auto] {$ f $} (m-1-2)
+      (m-1-2) edge node[auto] {$ g $} (m-2-2)
+      (m-1-1) edge node[auto,swap] {$ g \circ f $} (m-2-2);
+    \end{tikzpicture} & \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+      { A & B & \\ & C & D \\ };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge node[auto] {$ f $} (m-1-2)
+      (m-1-2) edge node[auto] {$ g $} (m-2-2)
+      (m-2-2) edge node[auto] {$ h $} (m-2-3)
+      (m-1-1) edge node[auto,swap] {$ g \circ f $} (m-2-2)
+      (m-1-2) edge node[auto] {$ h \circ g $} (m-2-3);
+    \end{tikzpicture} & \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+      \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+      { A \\ };
+      \path[->,font=\scriptsize]
+      (m-1-1) edge[loop above] node[auto] {$ 1_A $} (m-1-1);
+    \end{tikzpicture}
+  \end{tabular}
+\end{center}
+\smallskip 
+\textit{Diagramas conmutativos de las propiedades básicas.} \\
+
+
+\section{Ejemplos de categorías}
+Como idea simplificadora, podríamos pensar que los objetos son
+conjuntos, y los morfismos, funciones entre esos conjuntos; de hecho,
+el primer ejemplo es ese caso concreto. Este es un buen modelo
+intuitivo para trabajar con algunas categorías, pero presentaremos
+ejemplos que rechazan esta intuición. Hay categorías que no consisten
+de conjuntos y morfismos entre ellos.
+
+\subsubsection{Categoría \texttt{Set}}
+La categoría de los conjuntos con las funciones entre conjuntos como morfismos.
+
+\begin{gather*}
+  Obj(\texttt{Set}) = Clase\ de\ todos\ los\ conjuntos \\
+  Hom(A,B)= B^A = \{f \;|\; f: A \rightarrow B \}
+\end{gather*}
+
+Trivialmente es categoría: las funciones se componen en funciones, la
+composición es asociativa y la identidad funciona como se espera,
+siendo otra función.
+
+\subsubsection{Categoría \texttt{VectR}}
+La categoría de los espacios vectoriales reales con las funciones lineales entre
+espacios vectoriales reales.
+
+\begin{gather*}
+  Obj(\texttt{VectR}) = Clase\ de\ espacios\ vectoriales\ sobre\ \mathbb{R} \\
+  Hom(A,B)= \mathcal{L}_{\mathbb{R}}(A,B)
+\end{gather*}
+
+\begin{exercise} 
+  Observar que \texttt{VectR} es una categoría.
+\end{exercise}
+
+\subsubsection{Categoría \texttt{$(S,\sim)$}}
+Cualquier conjunto $S$ que tenga definida una relación de equivalencia $\sim$ tiene
+definida una categoría asociada en la que los objetos son los elementos del conjunto
+y los morfismos sólo representan casos particulares de la relación de equivalencia.
+\textit{En este ejemplo, los morfismos no son funciones y los objetos no son conjuntos,
+  rechazando por primera vez la intuición del primer ejemplo.}
+
+\begin{gather*}
+  Obj((S,\sim)) = S
+\end{gather*}
+
+Hay un morfismo entre dos elementos si y sólo si están relacionados:
+
+\begin{align*}
+  Hom(a,b)= \twopartdef{(a,b)}{a \sim b}{\emptyset}{a \nsim b}
+\end{align*}
+
+
+
+
+
 \chapter{Tipos de morfismos}
-  \section {Isomorfismos}
-    \begin{definition}
-      Un morfismo $f \in Hom(A,B)$ es \textbf{isomorfismo} si existe un morfismo inverso:
-	$g \in Hom(B,A)$ cumpliendo:
-      \begin{gather*}
-	(g \circ f) = 1_A \qquad (f \circ g) = 1_B
-      \end{gather*}
-    \end{definition}
 
+\section {Isomorfismos}
+Queremos dar una definición que sea equivalente al habitual isomorfismo entre conjuntos
+pero que provenga de la estructura de categoría. Así, podremos llevar la noción de
+isomorfismo a categorías más allá de \texttt{Set}.
 
-    
-    \begin{exercise} 
-      Probar que el inverso, si existe, es único. Lo notaremos como $f^{-1}$. Observar que si
-      existe un inverso por la derecha y un inverso por la izquierda, deben ser iguales.
-    \end{exercise}
+\begin{definition}
+  Un morfismo $f \in Hom(A,B)$ es \textbf{isomorfismo} si existe un morfismo inverso:
+  $g \in Hom(B,A)$ cumpliendo:
+  \begin{gather*}
+    (g \circ f) = 1_A \qquad (f \circ g) = 1_B
+  \end{gather*}
+\end{definition}
+  
+\begin{exercise} 
+  Probar que el inverso, si existe, es único. Lo notaremos como $f^{-1}$. Observar que si
+  existe un inverso por la derecha y un inverso por la izquierda, deben ser iguales.
+\end{exercise}
 
+Nótese que no hemos probado todavía (aunque veremos que es trivial), que la noción de
+isomorfismo que acabamos de definir coincida con la noción habitual de isomorfismo entre
+conjuntos.
     
     \subsection{Propiedades de isomorfismos}
       \begin{itemize}
