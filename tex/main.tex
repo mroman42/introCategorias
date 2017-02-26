@@ -334,9 +334,10 @@ Hay un morfismo entre dos elementos si y sólo si están relacionados:
 \chapter{Tipos de morfismos}
 
 \section {Isomorfismos}
-Queremos dar una definición que sea equivalente al habitual isomorfismo entre conjuntos
-pero que provenga de la estructura de categoría. Así, podremos llevar la noción de
-isomorfismo a categorías más allá de \texttt{Set}.
+Queremos dar una definición que sea equivalente al habitual
+isomorfismo entre conjuntos pero que provenga de la estructura de
+categoría. Así, podremos llevar la noción de isomorfismo a categorías
+más allá de \texttt{Set}.
 
 \begin{definition}
   Un morfismo $f \in Hom(A,B)$ es \textbf{isomorfismo} si existe un morfismo inverso:
@@ -351,106 +352,150 @@ isomorfismo a categorías más allá de \texttt{Set}.
   existe un inverso por la derecha y un inverso por la izquierda, deben ser iguales.
 \end{exercise}
 
-Nótese que no hemos probado todavía (aunque veremos que es trivial), que la noción de
-isomorfismo que acabamos de definir coincida con la noción habitual de isomorfismo entre
-conjuntos.
-    
-    \subsection{Propiedades de isomorfismos}
-      \begin{itemize}
-       \item La identidad es isomorfismo: $(1)^{-1} = 1$ 
-       \item El inverso de un isomorfismo es isomorfismo: $(f^{-1})^{-1} = f$.
-       \item La composición de isomorfismos es isomorfismo: $(g \circ f)^{-1} = f^{-1} \circ g^{-1}$
-      \end{itemize}
+Nótese que no hemos probado todavía (aunque veremos que es trivial),
+que la noción de isomorfismo que acabamos de definir coincida con la
+noción habitual de isomorfismo entre conjuntos.
 
-    Dos objetos $A,B$ son \textbf{isomorfos} si existe un isomorfismo en $Hom(A,B)$, la isomorfía se
-    nota como $A \cong B$ y es, por las propiedades anteriores, una relación de equivalencia.
-      
-    Nótese que, precisamente, los isomorfismos de \texttt{Set} son las biyecciones entre conjuntos.
-    Los isomorfismos de \texttt{Top} son los homeomorfismos y los isomorfismos de \texttt{Met} son
-    las isometrías.
-    
-  \section {Epimorfismos y monomorfismos}
-    \begin{definition} 
-      Un morfismo $f \in Hom(A,B)$ es \textbf{monomorfismo} si para cualquier objeto $C$ y
-      para cada par de morfismos $g,h: C \rightarrow A$, el morfismo puede \textit{cancelarse} a la izquierda:
-      \begin{gather*}
-	f \circ g = f \circ h \quad \Rightarrow \quad g = h
-      \end{gather*}
-    \end{definition}
 
-    Es decir, si el siguiente diagrama conmuta y $f$ es monomorfismo, entonces $g=h$.
-    \begin{center}
-     \begin{tikzcd}
-       C \arrow[bend left]{r}{g} \arrow[bend right]{r}{h} & A \arrow[tail]{r}{f} & B
-     \end{tikzcd}
-    \end{center}
-    
-    \begin{definition} 
-      Análogamente, un morfismo $f \in Hom(A,B)$ es \textbf{epimorfismo} si para cualquier objeto $C$ y
-      para cada par de morfismos $g,h: B \rightarrow C$, el morfismo puede \textit{cancelarse} a la derecha:
-      \begin{gather*}
-	g \circ f = h \circ f \quad \Rightarrow \quad g = h
-      \end{gather*}
-    \end{definition}
+\subsection{Propiedades de isomorfismos}
+\begin{theorem}
+  Los isomorfismos de cualquier categoría cumplen que:
+  
+  \begin{itemize}
+  \item La identidad es isomorfismo: $(1)^{-1} = 1$ 
+  \item El inverso de un isomorfismo es isomorfismo: $(f^{-1})^{-1} = f$.
+  \item La composición de isomorfismos es isomorfismo: $(g \circ f)^{-1} = f^{-1} \circ g^{-1}$
+  \end{itemize}
 
-    De nuevo, si el siguiente diagrama conmuta y $f$ es epimorfismo, entonces $g=h$.
-    %% A - B = C %%
-    \begin{center}
-     \begin{tikzcd}
-       A \arrow[two heads]{r}{f} & B \arrow[bend left]{r}{g} \arrow[bend right]{r}{h} & C
-     \end{tikzcd}
-    \end{center}
+\end{theorem}
+
+Nótese que, precisamente, los isomorfismos de \texttt{Set} son las
+biyecciones entre conjuntos.  Los isomorfismos de \texttt{Top} son los
+homeomorfismos y los isomorfismos de \texttt{Met} son las isometrías.
+
+\begin{definition}
+  Dos objetos $A,B$ son \textbf{isomorfos} si existe un isomorfismo en
+  $Hom(A,B)$, la isomorfía se nota como $A \cong B$ y es, por las
+  propiedades anteriores, una relación de equivalencia.
+\end{definition}
+
+
+\section{Epimorfismos y monomorfismos}
+Una vez hemos llevado la noción de isomorfismo a cualquier categoría, parece
+razonable definir nociones equivalentes para las funciones que sólo presentan
+inversa por un lado.
+
+\begin{definition} 
+  Un morfismo $f \in Hom(A,B)$ es \textbf{monomorfismo} si para
+  cualquier objeto $C$ y para cada par de morfismos
+  $g,h: C \rightarrow A$, el morfismo puede \textit{cancelarse} a la
+  izquierda:
+  
+  \begin{gather*}
+    f \circ g = f \circ h \quad \Rightarrow \quad g = h
+  \end{gather*}
+\end{definition}
+
+Es decir, si el siguiente diagrama conmuta y $f$ es monomorfismo,
+entonces $g=h$.
+
+\begin{center}
+  \begin{tikzcd}
+    C \arrow[bend left]{r}{g} \arrow[bend right]{r}{h} & A \arrow[tail]{r}{f} & B
+  \end{tikzcd}
+\end{center}
     
-  \section {Ejemplos en varias categorías}
-    \subsection{Categoría \texttt{Set}}
-      En la categoría de los conjuntos, los isomorfismos son las funciones con inversa; lo
-      que coincide con la definición de isomorfismos entre conjuntos. Dos conjuntos son
-      isomorfos si tienen la misma cardinalidad.
-      Los monomorfismos se corresponden con las funciones inyectivas y los epimorfismos con
-      las funciones sobreyectivas.
+\begin{definition} 
+  Análogamente, un morfismo $f \in Hom(A,B)$ es \textbf{epimorfismo}
+  si para cualquier objeto $C$ y para cada par de morfismos
+  $g,h: B \rightarrow C$, el morfismo puede \textit{cancelarse} a la
+  derecha:
+  
+  \begin{gather*}
+    g \circ f = h \circ f \quad \Rightarrow \quad g = h
+  \end{gather*}
+\end{definition}
+
+De nuevo, si el siguiente diagrama conmuta y $f$ es epimorfismo, entonces $g=h$.
+
+\begin{center}
+  \begin{tikzcd}
+    A \arrow[two heads]{r}{f} & B \arrow[bend left]{r}{g} \arrow[bend right]{r}{h} & C
+  \end{tikzcd}
+\end{center}
+
+Notaremos que esto coincide con las nociones de función inyectiva y
+función sobreyectiva entre conjuntos, pero habrá categorías en las que
+las dos nociones no coincidan.
+
+\subsection{Relación con isomorfismos}
+Podemos demostrar desde la definición que un isomorfismo deberá ser
+forzosamente un monomorfismo y un epimorfismo. Sin embargo, no será
+cierto que un morfismo que sea monomorfismo y epimorfismo deba ser
+isomorfismo. Ocurre de hecho, en la categoría de los conjuntos,
+pero no así en $(\mathbb{Z},\leq)$, por ejemplo:
+
+
+\section {Ejemplos en varias categorías}
+\subsection{Categoría \texttt{Set}}
+En la categoría de los conjuntos, los isomorfismos son las funciones
+con inversa; lo que coincide con la definición de isomorfismos entre
+conjuntos. Además, sabemos que dos conjuntos son isomorfos si y sólo
+si tienen la misma cardinalidad.
+
+Los monomorfismos se corresponden con las funciones
+inyectivas y los epimorfismos con las funciones sobreyectivas.
     
-    \subsection{Categoría \texttt{$(\mathbb{Z},\leq)$}}
-      En esta categoría, los únicos isomorfismos son las identidades. Nótese además
-      que todos los morfismos son monomorfismos y epimorfismos, y, aun así, no son
-      isomorfismos. Esto sirve de nuevo para no aceptar directamente la intuición
-      guiada por la clase \texttt{Set}, donde morfismos que sean monomorfismos y
-      epimorfismos deben ser isomorfismos.
-      Y la composición se define como:
-      \begin{align*}
-       (a,b) \circ (b,c) = (a,c)
-      \end{align*}
-      Probar que es categoría se reduce a notar que la composición de morfismos es morfismo (por
-      ser la relación transitiva), que la composición es asociativa y que existe el morfismo identidad
-      $(a,a)$, por ser la relación reflexiva.
+\subsection{Categoría \texttt{$(\mathbb{Z},\leq)$}}
+En esta categoría, los únicos isomorfismos son las identidades. Nótese
+además que todos los morfismos son monomorfismos y epimorfismos, y,
+aun así, no son isomorfismos. Esto sirve de nuevo para no aceptar
+directamente la intuición guiada por la clase \texttt{Set}, donde
+morfismos que sean monomorfismos y epimorfismos deben ser
+isomorfismos. La composición se define como:
+
+\begin{align*}
+  (a,b) \circ (b,c) = (a,c)
+\end{align*}
+
+Probar que es categoría se reduce a notar que la composición de
+morfismos es morfismo (por ser la relación transitiva), que la
+composición es asociativa y que existe el morfismo identidad $(a,a)$,
+por ser la relación reflexiva.
      
-    \subsection{Categoría \texttt{$(S,\leq)$}}
-      Cualquier conjunto parcialmente ordenado tiene una categoría asociada. Los objetos
-      son sus elementos y los morfismos son casos particulares de la relación de orden.
-      \begin{gather*}
-        Obj((S,\leq)) = S
-      \end{gather*}
-      Hay un morfismo entre $a$ y $b$ si y sólo si $a \leq b$:
-      \begin{align*}
-        Hom(a,b)= \twopartdef{(a,b)}{a \leq b}{\emptyset}{\mbox{no}}
-      \end{align*}
-      La composición se define como anteriormente: $(a,b) \circ (b,c) = (a,c)$, y es
-      trivial volver a probar que se trata de una categoría.
-      \medskip
-      
-      Un posible diagrama conmutativo de la categoría \texttt{$(\mathbb{N},\leq)$} sería:
-      \begin{center}
-        \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
-	  \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
-	  { 1 & 3 & 5 \\ & 6 & 7 \\ };
-	  \path[->,font=\scriptsize]
-	  (m-1-1) edge node[auto] {$ (1,3) $} (m-1-2)
-	  (m-1-2) edge node[auto] {$ (3,6) $} (m-2-2)
-	  (m-2-2) edge node[auto] {$ (6,7) $} (m-2-3)
-	  (m-1-1) edge node[auto,swap] {$ (1,6) $} (m-2-2)
-	  (m-1-2) edge node[auto] {$ (3,5) $} (m-1-3)
-	  (m-1-3) edge node[auto] {$ (5,7) $} (m-2-3);
-	\end{tikzpicture}
-      \end{center}
+\subsection{Categoría \texttt{$(S,\leq)$}}
+Cualquier conjunto parcialmente ordenado tiene una categoría asociada. Los objetos
+son sus elementos y los morfismos son casos particulares de la relación de orden.
+
+\begin{gather*}
+  Obj((S,\leq)) = S
+\end{gather*}
+
+Hay un morfismo entre $a$ y $b$ si y sólo si $a \leq b$:
+
+\begin{align*}
+  Hom(a,b)= \twopartdef{(a,b)}{a \leq b}{\emptyset}{\mbox{no}}
+\end{align*}
+
+La composición se define como anteriormente: $(a,b) \circ (b,c) = (a,c)$, y es
+trivial volver a probar que se trata de una categoría.
+\medskip
+
+Un posible diagrama conmutativo de la categoría \texttt{$(\mathbb{N},\leq)$} sería:
+
+\begin{center}
+  \begin{tikzpicture}[descr/.style={fill=white,inner sep=2.5pt}]
+    \matrix (m) [matrix of math nodes, row sep=3em, column sep=3em]
+    { 1 & 3 & 5 \\ & 6 & 7 \\ };
+    \path[->,font=\scriptsize]
+    (m-1-1) edge node[auto] {$ (1,3) $} (m-1-2)
+    (m-1-2) edge node[auto] {$ (3,6) $} (m-2-2)
+    (m-2-2) edge node[auto] {$ (6,7) $} (m-2-3)
+    (m-1-1) edge node[auto,swap] {$ (1,6) $} (m-2-2)
+    (m-1-2) edge node[auto] {$ (3,5) $} (m-1-3)
+    (m-1-3) edge node[auto] {$ (5,7) $} (m-2-3);
+  \end{tikzpicture}
+\end{center}
  
 
 \chapter{Propiedades universales}
