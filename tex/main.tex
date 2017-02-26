@@ -228,18 +228,29 @@ entre sí.
     cada par de objetos $A,B \in Obj(\C)$.
   \end{itemize}
   
+  Cumpliendo sus morfismos las siguientes \textbf{propiedades de la composición}:
+
+  \begin{itemize}
+  \item Para dos morfismos $f \in Hom(A,B)$, $g \in Hom(B,C)$, existe su
+    morfismo composición $f \circ g$.
+  \item La composición es asociativa: $f \circ (g \circ h) = (f \circ g) \circ h$
+  \item Todos los objetos tienen un morfismo identidad,
+    $1_{A} \in Hom(A,A)$, neutro para la composición:
+    $\forall f \in Hom(A,B): f \circ 1_{A} = 1_{B} \circ f = f$
+  \end{itemize}
 \end{definition}
 
-Cumpliendo sus morfismos las siguientes propiedades:
+Es decir, para definir una categoría tenemos por un lado que definir
+sus objetos, que son las entidades entre las que actuarán los
+morfismos, y, por otro lado, los morfismos entre cada par de objetos.
+Nótese que en el ejemplo de los grupos, los conjuntos o los espacios
+topológicos, los objetos son conjuntos y los morfismos funciones entre
+ellas. La definición de categoría es independiente de los elementos
+internos de los conjuntos. \\
 
-\begin{itemize}
-\item Para dos morfismos $f \in Hom(A,B)$, $g \in Hom(B,C)$, existe su
-  morfismo composición $f \circ g$.
-\item La composición es asociativa: $f \circ (g \circ h) = (f \circ g) \circ h$
-\item Todos los objetos tienen un morfismo identidad,
-  $1_{A} \in Hom(A,A)$, neutro para la composición:
-  $\forall f \in Hom(A,B): f \circ 1_{A} = 1_{B} \circ f = f$
-\end{itemize}
+Si quitamos importancia a los objetos, la categoría es simplemente un
+conjunto de morfismos que pueden componerse sólo cuando el
+\textit{dominio} de uno coincida con el \textit{codominio} del otro.
 
 \begin{exercise}
   Demostrar que la identidad es el único elemento neutro para la
@@ -276,6 +287,10 @@ Cumpliendo sus morfismos las siguientes propiedades:
 \smallskip 
 \textit{Diagramas conmutativos de las propiedades básicas.} \\
 
+Usaremos \textbf{diagramas conmutativos} para representar partes de una categoría.
+Cada morfismo lo representamos por una flecha de su codominio a su dominio;
+y asumimos que cualesquiera dos caminos en el diagrama dan lugar al mismo
+morfismo compuesto.
 
 \section{Ejemplos de categorías}
 Como idea simplificadora, podríamos pensar que los objetos son
