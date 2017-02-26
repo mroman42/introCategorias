@@ -300,6 +300,23 @@ intuitivo para trabajar con algunas categorías, pero presentaremos
 ejemplos que rechazan esta intuición. Hay categorías que no consisten
 de conjuntos y morfismos entre ellos.
 
+\subsubsection{Categoría de un objeto}
+Podemos crear una categoría con un sólo objeto $A$ y definir sobre él
+morfismos que tendrán que pertenecer forzosamente a $Hom(A,A)$. Nótese
+como entre estos morfismos, deberá existir una identidad y una composición
+asociativa. Así, las categorías de un sólo objeto son los \textbf{monoides}.
+
+\subsubsection{Una categoría de dos objetos}
+Podemos crear categorías pequeñas tomando varios objetos, definiendo unos pocos
+morfismos entre ellos y asegurándonos que cada par de morfismos tiene su composición
+en la categoría:
+
+\begin{tikzcd}
+  A \lar[loop right]{\mathrm{id}} \rar[bend left]{f}\rar[bend right]{g}
+  &
+  B \arrow[loop right]{r}{\mathrm{id}}
+\end{tikzcd}
+
 \subsubsection{Categoría \texttt{Set}}
 La categoría de los conjuntos con las funciones entre conjuntos como morfismos.
 
@@ -308,22 +325,71 @@ La categoría de los conjuntos con las funciones entre conjuntos como morfismos.
   Hom(A,B)= B^A = \{f \;|\; f: A \rightarrow B \}
 \end{gather*}
 
-Trivialmente es categoría: las funciones se componen en funciones, la
-composición es asociativa y la identidad funciona como se espera,
-siendo otra función.
+La clase de todos los conjuntos forma en sí misma una categoría, que
+tiene como objetos a los conjuntos, y como morfismos a las funciones
+entre conjuntos con la composición usual. Podemos comprobar que las
+funciones cumplen las propiedades de la composición. \\
 
-\subsubsection{Categoría \texttt{VectR}}
-La categoría de los espacios vectoriales reales con las funciones lineales entre
-espacios vectoriales reales.
+Hay además un detalle que tenemos que tener en cuenta. Estamos hablando
+de la \textit{clase de todos los conjuntos} porque no podemos hablar
+propiamente del \textit{conjunto de todos los conjuntos}; definirlo nos
+llevaría a tener que tratar con problemas como la \href{https://es.wikipedia.org/wiki/Paradoja_de_Russell}{paradoja de Russell}.
+
+\begin{tikzcd}
+                                        & \{1,2\} \dar{f} \\
+\varnothing \urar[hook]{i}\rar[hook]{i} & \{a,b,c\}
+\end{tikzcd}
+
+\textit{Diagrama conmutativo en la categoría de los conjuntos.} \\
+
+
+\subsubsection{Categoría \texttt{k-Vect}}
+La categoría de los espacios vectoriales sobre un cuerpo fijo $k$, con
+las funciones lineales entre espacios vectoriales reales.
 
 \begin{gather*}
   Obj(\texttt{VectR}) = Clase\ de\ espacios\ vectoriales\ sobre\ \mathbb{R} \\
   Hom(A,B)= \mathcal{L}_{\mathbb{R}}(A,B)
 \end{gather*}
 
+Donde cada función $f \in {\cal L}_k(A,B)$ cumple que $f(x+y) = f(x)+f(y)$ para cualesquiera $x,y \in A$;
+y además $f(\alpha x) = \alpha f(x)$ cuando $\alpha \in k$.
+
 \begin{exercise} 
-  Observar que \texttt{VectR} es una categoría.
+  Observar que \texttt{VectR} es una categoría. Debe comprobarse que
+  la composición de funciones lineales es lineal y que la identidad sea
+  también lineal.
 \end{exercise}
+
+Nótese que cada cuerpo $k$ da lugar a una categoría distinta de espacios
+vectoriales sobre él.
+
+
+\subsubsection{Categoría \texttt{Grp}}
+La categoría de los grupos, con los homomorfismos de grupos entre ellos.
+
+\begin{gather*}
+  Obj(\texttt{Grp}) = Grupos \\
+  Hom(A,B)= Hom_{grp}(A,B)
+\end{gather*}
+
+Donde un $f \in Hom_{grp}(A,B)$ debe cumplir $f(xy) = f(x)f(y)$ para cualesquiera $x,y \in A$.
+
+\subsubsection{Categoría de espacios topológicos}
+La categoría de los espacios topológicos, con las funciones continuas entre ellos.
+
+\begin{gather*}
+  Obj(\texttt{Grp}) = Espacios\ topológicos \\
+  Hom(A,B)= Hom_{top}(A,B)
+\end{gather*}
+
+Donde a un $f \in Hom_{top}(A,B)$ le exigimos que sea continuo. Esto es, que dado
+un abierto $U \in B$, su preimagen, $f^{-1}(U)$, sea abierta en $A$.
+
+\begin{exercise}
+  Observar que \texttt{Top} es una categoría.
+\end{exercise}
+
 
 \subsubsection{Categoría \texttt{$(S,\sim)$}}
 Cualquier conjunto $S$ que tenga definida una relación de equivalencia $\sim$ tiene
@@ -460,7 +526,13 @@ si tienen la misma cardinalidad.
 
 Los monomorfismos se corresponden con las funciones
 inyectivas y los epimorfismos con las funciones sobreyectivas.
-    
+
+\subsection{Categoría de espacios topológicos}
+Nótese que ser isomorfismo implica tener una inversa dentro de la
+categoría. Puesto que los morfismos en la categoría de los espacios
+topológicos son las funciones continuas; los isomorfismos serán las
+funciones continuas con inversa continua.
+
 \subsection{Categoría \texttt{$(\mathbb{Z},\leq)$}}
 En esta categoría, los únicos isomorfismos son las identidades. Nótese
 además que todos los morfismos son monomorfismos y epimorfismos, y,
@@ -546,8 +618,10 @@ tiene por qué tener objetos terminales, y estos no tienen por qué ser
 objetos son ambos iniciales o ambos finales en una categoría, serán
 isomorfos, como demostramos a continuación.
     
-\begin{theorem} Los objetos iniciales y los objetos finales de una
-  categoría son esencialmente únicos:
+\begin{theorem}
+Los objetos iniciales y los objetos finales de una
+categoría son esencialmente únicos:
+
   \begin{itemize}
   \item Si $I_1,I_2$ son iniciales, $I_1 \cong I_2$
   \item Si $F_1,F_2$ son finales, $F_1 \cong F_2$
