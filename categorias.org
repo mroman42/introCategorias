@@ -1,0 +1,29 @@
+#+TITLE: Teoría de Categorías
+#+AUTHOR: Mario Román
+#+EMAIL: mromang08@gmail.com
+
+#+OPTIONS: toc:nil
+#+LANGUAGE: es
+#+SETUPFILE: math.setup
+#+SETUPFILE: essay.setup
+
+* Primera parte: Introducción
+** Categorías
+*** Definición
+*** Ejemplos
+** Morfismos
+*** Isomorfismos
+*** Monomorfismos y epimorfismos
+*** Ejemplos
+** Propiedades universales
+*** Objetos terminales
+*** Productos y coproductos
+*** Núcleos y conúcleos
+* Segunda parte: Funtores
+** Funtores
+** Transformaciones naturales
+** Lema de Yoneda
+** Adjunciones
+* Tercera parte: Límites
+** Definición
+** Ejemplos
