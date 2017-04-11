@@ -7,18 +7,215 @@
 #+SETUPFILE: math.setup
 #+SETUPFILE: essay.setup
 
-* Primera parte: Introducción
+* Primera parte: Introducción a categorías
 ** Categorías
-*** Definición
+*** Definición de categoría
+#+begin_definition
+Una *categoría* ${\cal C}$ está formada por cite:brauer17
+
+ * ${\cal C}_0$, un conjunto grande de *objetos*, y
+ * ${\cal C}_1$, un conjunto grande de *morfismos*.
+
+Cada morfismo $f \in {\cal C}_1$ tiene un *dominio*, $\mathrm{dom}(f) \in {\cal C}_0$, y un *codominio* 
+$\mathrm{cod}(f) \in {\cal C}_0$; y solemos notarlo como
+
+\[
+f \colon \mathrm{dom}(f) \to \mathrm{cod}(f).
+\]
+
+Además, dados morfismos $f \colon A \to B$ y $g \colon B \to C$ existe su *morfismo composición*
+$g \circ f \colon A \to C$; que es asociativo y tiene elementos neutros $1_{A}\colon A \to A$. Es decir,
+
+\[
+h \circ (g \circ f) = (h \circ g) \circ f
+\quad\text{ y }\quad
+f \circ 1_A = f = 1_B \circ f.
+\]
+#+end_definition
+
+#+begin_remark
+En la definición hemos usado explícitamente /conjuntos grandes/, más
+comúnmente llamados /[[https://es.wikipedia.org/wiki/Clase_(teoría_de_conjuntos)][clases]]/, en lugar de conjuntos. En el futuro
+querremos trabajar con categorías que contengan como objetos a todos
+los conjuntos posibles; pero este tipo de construcciones causan problemas
+en la teoría axiómatica de conjuntos tales como la 
+[[https://es.wikipedia.org/wiki/Paradoja_de_Russell][paradoja de Russell]], así que usaremos esta definición más general para 
+evitarlas.
+#+end_remark
+
+#+begin_remark
+Lo realmente importante en una categoría son los morfismos y cómo se
+componen. Nótese que no trataremos el interior de los objetos, estos
+sólo aparecen como dominio y codominio de los morfismos. Podemos
+pensar en una categoría como la estructura algebraica que capta la
+noción de composición.
+#+end_remark
+
+#+begin_definition
+Notamos al conjunto de morfismos con dominio $A$ y codominio $B$ como $\mathrm{Hom}(A,B)$.
+#+end_definition
+
+En ocasiones será útil señalar explícitamente la categoría sobre la que
+se consideran los morfismos. En esos casos se notará con un subíndice,
+como $\mathrm{Hom}_{\cal C}(A,B)$. Al conjunto $\mathrm{Hom}(A,A)$ lo llamamos conjunto de
+*endomorfismos* del objeto $A$ y lo notamos por $\mathrm{End}(A)$.
+
 *** Ejemplos
+**** Monoides
+# Dar el lema y luego acabar dando una posible definición alternativa
+# de monoide.
+
+#+begin_definition
+Definimos un *monoide* como una categoría con un solo objeto.
+#+end_definition
+
+Para comprobar cómo coincide con nuestra definición usual de monoide,
+debemos considerar los morfismos $f \colon A \to A$ como elementos del monoide
+y la composición como la operación del monoide. El elemento neutro será
+la identidad del objeto.
+
+**** Relaciones de orden
+#+begin_lemma
+Cada conjunto parcialmente ordenado define una categoría con sus elementos
+como objetos y un único morfismo $\rho_{ab} \colon a \to b$ sólo cuando $a \leq b$.
+#+end_lemma
+
+#+begin_proof
+Definimos la composición de la única forma posible, $\rho_{bc}\circ\rho_{ab}$ será $\rho_{ac}$, el
+único morfismo $a \to c$, que además sabemos que existe porque si existen
+$\rho_{ab}$ y $\rho_{bc}$, querrá decir que $a \leq b$ y que $b \leq c$; y por transitividad, $a \leq c$.
+La asociatividad se tiene trivialmente porque entre dos objetos habrá,
+a lo sumo, un solo morfismo.
+
+La identidad $\mathrm{id}_a = \rho_{aa}$ existe por reflexividad y podemos comprobar 
+trivialmente que es neutra respecto a la composición, ya que entre 
+cualesquiera dos objetos existe a lo sumo un morfismo.
+#+end_proof
+
+**** Conjuntos
+#+begin_lemma
+Las aplicaciones entre conjuntos, con la composición usual, determinan
+una categoría a la que llamaremos $\mathtt{Set}$.
+#+end_lemma
+
+#+begin_proof
+Sabemos que la composición usual de aplicaciones entre conjuntos es
+asociativa y que la identidad es un elemento neutro con la composición.
+#+end_proof
+
+**** Grupos abelianos, espacios vectoriales, módulos
+#+begin_lemma
+Los homomorfismos de $R\text{-módulos}$ izquierdos (recíprocamente con los derechos)
+con la composición usual, determinan una categoría a la que llamaremos
+$R\mathtt{-Mod}$.
+#+end_lemma
+
+#+begin_proof
+Nótese que de nuevo la composición usual es asociativa y la identidad
+es elemento neutro de la composición. Sólo nos falta comprobar que,
+efectivamente, la composición de homomorfismos de módulos sigue siendo
+un homomorfismo de módulos.
+#+end_proof
+
+#+begin_corollary
+Los homomorfismos de grupos abelianos forman una categoría que llamaremos
+$\mathtt{Ab}$. Las funciones lineales entre $k\text{-espacios vectoriales}$ forman una categoría
+a la que llamaremos $k\mathtt{-Vect}$.
+#+end_corollary
+
+**** Espacios topológicos
+#+begin_lemma
+
+#+end_lemma
+
 ** Morfismos
 *** Isomorfismos
+#+begin_definition
+Un morfismo $f\colon A \to B$ es un *isomorfismo* si existe un morfismo inverso
+$f^{-1} \colon B \to A$ cumpliendo que
+
+\[
+f \circ f^{-1} = \mathrm{id} = f^{-1} \circ f.
+\]
+#+end_definition
+
+#+begin_definition
+Dos objetos $A,B$ son *isomorfos* si existe un isomorfismo entre
+ellos. La isomorfía se nota como $A \cong B$.
+#+end_definition
+
+#+begin_fact
+Son isomorfismos
+
+  - la identidad, con $\mathrm{id}^{-1} = \mathrm{id}$.
+  - el inverso de un isomorfismo, con $\left( f^{-1} \right)^{-1} = f$.
+  - la composición de isomorfismos, con $\left( g\circ f \right)^{-1} = f^{-1} \circ g^{-1}$.
+
+La isomorfía es por tanto una relación de equivalencia entre objetos.
+#+end_fact
+
 *** Monomorfismos y epimorfismos
+#+begin_definition
+Un morfismo $f\colon A \to B$ es un *monomorfismo* si puede cancelarse a la izquierda
+en la composición. Es decir, para cualquier par de morfismos $g,h$ se cumple
+
+\[
+f \circ g = f \circ h \implies g = h.
+\]
+#+end_definition
+
+#+begin_definition
+Un morfismo $f\colon A \to B$ es un *epimorfismo* si puede cancelarse a la derecha
+en la composición. Es decir, para cualquier par de morfismos $g,h$ se cumple
+
+\[
+g \circ f = h \circ f \implies g = h.
+\]
+#+end_definition
+
+#+begin_remark
+Un morfismo puede ser monomorfismo y epimorfismo sin tener una inversa y
+ser isomorfismo. Tenemos ejemplos en categorías definidas por conjuntos
+parcialmente ordenados.
+#+end_remark
+
 *** Ejemplos
 ** Propiedades universales
 *** Objetos terminales
+#+begin_definition
+Un objeto $I$ se dice *inicial* si desde cualquier otro objeto llega exactamente
+un morfismo. Es decir, para todo $A$, existe un único $i \colon I \to A$.
+#+end_definition
+
+#+begin_definition
+Un objeto $T$ se dice *final* si desde cualquier otro objeto sale exactamente
+un morfismo. Es decir, para todo $A$, existe un único $t\colon A \to T$.
+#+end_definition
+
+#+begin_definition
+Llamamos *objeto cero* a un objeto que es a la vez inicial y final.
+#+end_definition
+
+Nótese que una categoría no tiene por qué tener objetos terminales, ni tienen
+por qué ser únicos; pero sí serán únicos salvo isomorfismos.
+
+#+begin_fact
+Los objetos iniciales y finales de una categoría son /esencialmente únicos/,
+es decir,
+
+ - dos objetos iniciales serán isomorfos.
+ - dos objetos finales serán isomorfos.
+#+end_fact
+
 *** Productos y coproductos
+#+begin_definition
+#+end_definition
+
 *** Núcleos y conúcleos
+** Referencias
+bibliographystyle:unsrt
+bibliography:math.bib
+
 * Segunda parte: Funtores
 ** Funtores
 ** Transformaciones naturales
