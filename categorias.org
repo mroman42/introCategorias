@@ -11,7 +11,7 @@
 ** Categorías
 *** Definición de categoría
 #+begin_definition
-Una *categoría* ${\cal C}$ está formada por cite:brauer17
+Una *categoría* ${\cal C}$ está formada por cite:brauer17 cite:aluffi09_prelim
 
  * ${\cal C}_0$, un conjunto grande de *objetos*, y
  * ${\cal C}_1$, un conjunto grande de *morfismos*.
@@ -62,11 +62,8 @@ como $\mathrm{Hom}_{\cal C}(A,B)$. Al conjunto $\mathrm{Hom}(A,A)$ lo llamamos c
 
 *** Ejemplos
 **** Monoides
-# Dar el lema y luego acabar dando una posible definición alternativa
-# de monoide.
-
 #+begin_definition
-Definimos un *monoide* como una categoría con un solo objeto.
+Una categoría de un solo objeto es un *monoide*.
 #+end_definition
 
 Para comprobar cómo coincide con nuestra definición usual de monoide,
@@ -91,6 +88,27 @@ La identidad $\mathrm{id}_a = \rho_{aa}$ existe por reflexividad y podemos compr
 trivialmente que es neutra respecto a la composición, ya que entre 
 cualesquiera dos objetos existe a lo sumo un morfismo.
 #+end_proof
+
+#+begin_remark
+Cada ordinal define una relación de orden (un buen orden), que a su
+vez define una categoría. Por ejemplo, la categoría asociada a $1$
+será una categoría de un sólo objeto con la identidad, que también
+puede verse como el monoide trivial. La categoría asociada a $2$ será
+de la forma
+
+\[\begin{tikzcd}
+1 \ar[loop above]{u}{\mathrm{id}} \rar{f} & 2 \ar[loop above]{u}{\mathrm{id}} &,
+\end{tikzcd}\]
+
+y la categoría asociada a $\omega$ tendrá la forma
+
+\[\begin{tikzcd}
+1 \ar[loop above]{u} \rar \ar[bend right]{rr} \ar[bend right]{rrr} &
+2 \ar[loop above]{u} \rar \ar[bend right]{rr} & 
+3 \ar[loop above]{u} \rar \ar[bend right]{r} &
+\dots & .
+\end{tikzcd}\]
+#+end_remark
 
 **** Conjuntos
 #+begin_lemma
@@ -123,10 +141,22 @@ $\mathtt{Ab}$. Las funciones lineales entre $k\text{-espacios vectoriales}$ form
 a la que llamaremos $k\mathtt{-Vect}$.
 #+end_corollary
 
+#+begin_proof
+Nótese que los grupos abelianos son los $\mathbb{Z}\text{-módulos}$ y que los
+espacios vectoriales son los módulos sobre un cuerpo.
+#+end_proof
+
 **** Espacios topológicos
 #+begin_lemma
-
+Las funciones continuas entre espacios topológicos, con la composición
+usual, determinan una categoría a la que llamaremos $\mathtt{Top}$.
 #+end_lemma
+
+#+begin_proof
+Sabemos que la composición usual de funciones continuas es
+asociativa y que la identidad es un elemento neutro con la composición.
+Falta comprobar que la composición de continuas es continua.
+#+end_proof
 
 ** Morfismos
 *** Isomorfismos
@@ -154,6 +184,11 @@ Son isomorfismos
 La isomorfía es por tanto una relación de equivalencia entre objetos.
 #+end_fact
 
+#+begin_definition
+Llamamos además *automorfismos* a los /endomorfismos/ que sean
+/isomorfismos/.
+#+end_definition
+
 *** Monomorfismos y epimorfismos
 #+begin_definition
 Un morfismo $f\colon A \to B$ es un *monomorfismo* si puede cancelarse a la izquierda
@@ -174,12 +209,54 @@ g \circ f = h \circ f \implies g = h.
 #+end_definition
 
 #+begin_remark
-Un morfismo puede ser monomorfismo y epimorfismo sin tener una inversa y
-ser isomorfismo. Tenemos ejemplos en categorías definidas por conjuntos
-parcialmente ordenados.
+Un morfismo puede ser monomorfismo y epimorfismo sin tener una inversa
+y ser isomorfismo; en este caso lo llamamos *bimorfismo*.
 #+end_remark
 
 *** Ejemplos
+**** Aplicaciones inyectivas y sobreyectivas en conjuntos
+#+begin_proposition
+En la categoría de conjuntos,
+
+ - una aplicación es inyectiva si y sólo si es monomorfismo.
+ - una aplicación es sobreyectiva si y sólo si es epimorfismo.
+ - una aplicación es biyectiva si y sólo si es isomorfismo.
+#+end_proposition
+
+#+begin_proof
+Si $f \colon A \to B$ es inyectiva, es trivialmente monomorfismo. Si
+no es inyectiva, existen $x,y$ tales que $f(x) \neq f(y)$. Podemos
+tomar las funciones $g,h \colon \left\{ \ast \right\} \to A$ definidas como $g(\ast) = x$ y
+como $h(\ast) = y$ y comprobar que $f$ no es monomorfismo.
+
+Si $f \colon A \to B$ es sobreyectiva, es trivialmente epimorfismo. Si
+no es sobreyectiva, podemos tomar dos $g,h \colon B \to B \cup \left\{ \ast,\ast' \right\}$ y que 
+para un $x \notin \mathrm{im}(f)$, se definan como $g|_{B-\{x\}} = h|_{B-\{x\}} = \mathrm{id}$ pero con
+$g(x) = \ast$ y $h(x) = \ast'$.
+#+end_proof
+
+**** Grupos
+#+begin_definition
+Una categoría de un sólo objeto en la que todos los morfismos son
+isomorfismos es un *grupo*.
+#+end_definition
+
+Como en el caso de los [[*Monoides][monoides]], podemos tomar los automorfismos del
+objeto como los elementos del grupo.
+
+**** Un bimorfismo no isomorfismo
+Consideremos la inclusión $i\colon \mathbb{Q} \to \mathbb{R}$ en $\mathtt{Top}$. Trivialmente es un 
+monomorfismo por ser inyectiva. Además, es epimorfismo, ya que si 
+tenemos $g,h \colon \mathbb{R} \to A$ cumpliendo $g \circ i = h \circ
+i$, tendríamos $g|_{\mathbb{Q}} = h|_{\mathbb{Q}}$;
+y por continuidad, tendríamos $g = h$.
+
+Sin embargo no es un isomorfismo, no existen homeomorfismos entre
+$\mathbb{Q}$ y $\mathbb{R}$, que serían los isomorfismos de $\mathtt{Top}$. Lo único que usamos es
+que la densidad de $\mathbb{Q}$ en $\mathbb{R}$ fuerza a que sólo exista una posible
+extensión continua de las funciones definidas en $\mathbb{Q}$ a funciones
+definidas en $\mathbb{R}$.
+
 ** Propiedades universales
 *** Objetos terminales
 #+begin_definition
